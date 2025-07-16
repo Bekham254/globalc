@@ -7,7 +7,7 @@ interface CreditCardProps {
   description: string;
   price: number;
   balance: number;
-  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay';
+  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay' | 'discover';
   cardColor: string;
   rating: number;
   country: 'uk' | 'us' | 'germany' | 'italy' | 'canada' | 'australia';
