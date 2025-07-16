@@ -21,12 +21,13 @@ interface CardData {
 
 const generateCardData = (): CardData[] => {
   // Adjusted distribution: More Visa/MasterCard, fewer Amex/UnionPay
-  const cardTypes: Array<'visa' | 'mastercard' | 'amex' | 'discover' | 'unionpay'> = [
+  const cardTypes: Array<'visa' | 'mastercard' | 'amex' | 'discover' | 'unionpay' | 'paypal'> = [
     ...Array(25).fill('visa'),
     ...Array(25).fill('mastercard'),
-    ...Array(8).fill('paypal'),
+    ...Array(8).fill('discover'),
     ...Array(4).fill('amex'),
-    ...Array(3).fill('unionpay')
+    ...Array(3).fill('unionpay'),
+    ...Array(5).fill('paypal')
   ];
   
   const countries: Array<'uk' | 'us' | 'germany' | 'italy' | 'canada' | 'australia'> = ['uk', 'us', 'germany', 'italy', 'canada', 'australia'];
@@ -69,18 +70,24 @@ const generateCardData = (): CardData[] => {
 
   for (let i = 1; i <= 65; i++) {
     const cardType = cardTypes[i - 1] || cardTypes[Math.floor(Math.random() * cardTypes.length)];
-    const country = countries[Math.floor(Math.random() * countries.length)];
+    const country = cardType === 'paypal' ? 'us' : countries[Math.floor(Math.random() * countries.length)];
     const cardColor = cardColors[Math.floor(Math.random() * cardColors.length)];
-    const balance = Math.floor(Math.random() * 8000) + 380; // 380-8380
+    const balance = cardType === 'paypal' 
+      ? Math.floor(Math.random() * 2000) + 340 // 340-2340 for PayPal
+      : Math.floor(Math.random() * 8000) + 380; // 380-8380 for cards
     const price = cardType === 'paypal' 
-      ? Math.round(balance * 0.10) // 10% of balance for PayPal
-      : Math.round(balance * 0.08); // 8% of balance for others
+      ? Math.max(34, Math.round(balance * 0.10)) // 10% of balance for PayPal, minimum $34
+      : Math.max(34, Math.round(balance * 0.08)); // 8% of balance for others, minimum $34
     const rating = Math.round((Math.random() * 1.5 + 3.5) * 10) / 10; // 3.5-5.0
 
     cards.push({
       id: i,
-      title: `${cardTypeNames[cardType]} ${countryNames[country]} Card`,
-      description: `Premium ${cardTypeNames[cardType]} credit card issued in ${countryNames[country]} with high spending limits and exclusive benefits.`,
+      title: cardType === 'paypal' 
+        ? `${cardTypeNames[cardType]} Account`
+        : `${cardTypeNames[cardType]} ${countryNames[country]} Card`,
+      description: cardType === 'paypal'
+        ? `Verified ${cardTypeNames[cardType]} account with high transaction limits and instant transfer capabilities.`
+        : `Premium ${cardTypeNames[cardType]} credit card issued in ${countryNames[country]} with high spending limits and exclusive benefits.`,
       price,
       balance,
       cardType,
@@ -182,8 +189,8 @@ function App() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">Premium Credit Cards</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover our exclusive collection of 65+ premium credit cards from around the world with high limits, 
-            exceptional benefits, and instant M-Pesa payment options.
+            Discover our exclusive collection of 65+ premium credit cards and PayPal accounts from around the world with high limits, 
+            exceptional benefits, and instant mobile money payment options.
           </p>
         </div>
         

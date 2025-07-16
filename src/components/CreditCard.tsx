@@ -133,6 +133,9 @@ export default function CreditCard({
   };
 
   const formatCardNumber = () => {
+    if (cardType === 'paypal') {
+      return 'account@paypal.com';
+    }
     const baseNumber = cardType === 'amex' ? '3*** ******* *****' : '**** **** **** ****';
     return baseNumber;
   };
@@ -247,38 +250,46 @@ export default function CreditCard({
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 border border-gray-200">
       {/* Credit Card Visual */}
       <div className="relative p-4">
-        <div className={`${cardColor} rounded-lg p-4 text-white relative overflow-hidden shadow-xl`}>
+        <div className={`${cardType === 'paypal' ? 'bg-gradient-to-br from-blue-600 to-blue-800' : cardColor} rounded-lg p-4 text-white relative overflow-hidden shadow-xl`}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-5 rounded-full -mr-12 -mt-12"></div>
           <div className="absolute bottom-0 left-0 w-16 h-16 bg-white opacity-5 rounded-full -ml-8 -mb-8"></div>
           
-          {/* Country Flag in top-left corner */}
-          <div className="absolute top-3 left-3">
-            <span className="text-3xl">{countryFlags[country]}</span>
-          </div>
+          {/* Country Flag in top-left corner (only for cards, not PayPal) */}
+          {cardType !== 'paypal' && (
+            <div className="absolute top-3 left-3">
+              <span className="text-3xl">{countryFlags[country]}</span>
+            </div>
+          )}
           
           <div className="flex justify-between items-start mb-6">
-            <CreditCardIcon className="w-6 h-6 text-white opacity-80" />
+            {cardType === 'paypal' ? (
+              <div className="text-white text-lg font-bold">💰</div>
+            ) : (
+              <CreditCardIcon className="w-6 h-6 text-white opacity-80" />
+            )}
             {getCardLogo()}
           </div>
           
           <div className="mb-4">
-            <div className="text-xl font-mono tracking-wider mb-2 font-bold">
+            <div className={`${cardType === 'paypal' ? 'text-lg' : 'text-xl font-mono tracking-wider'} mb-2 font-bold`}>
               {formatCardNumber()}
             </div>
-            <div className="flex justify-between text-sm">
-              <div>
-                <div className="text-xs opacity-70">VALID THRU</div>
-                <div className="font-mono font-bold">12/28</div>
+            {cardType !== 'paypal' && (
+              <div className="flex justify-between text-sm">
+                <div>
+                  <div className="text-xs opacity-70">VALID THRU</div>
+                  <div className="font-mono font-bold">12/28</div>
+                </div>
+                <div>
+                  <div className="text-xs opacity-70">CVV</div>
+                  <div className="font-mono font-bold">***</div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs opacity-70">CVV</div>
-                <div className="font-mono font-bold">***</div>
-              </div>
-            </div>
+            )}
           </div>
           
           <div className="text-xs opacity-90 font-semibold">
-            CARDHOLDER NAME
+            {cardType === 'paypal' ? 'ACCOUNT HOLDER' : 'CARDHOLDER NAME'}
           </div>
         </div>
       </div>
@@ -287,7 +298,7 @@ export default function CreditCard({
         {/* Card balance and price */}
         <div className="text-center mb-4">
           <div className="text-lg font-bold text-gray-800 mb-1">
-            Balance ${balance.toLocaleString()}
+            {cardType === 'paypal' ? 'Account Limit' : 'Balance'} ${balance.toLocaleString()}
           </div>
           <div className="text-2xl font-bold text-green-600">
             ${price}
@@ -333,10 +344,10 @@ export default function CreditCard({
               <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-medium text-gray-600">
-                    {getPaymentDetails().label}:
+                    {cardType === 'paypal' ? 'PayPal Account' : getPaymentDetails().label}:
                   </span>
-                  <span className="text-xl font-bold text-gray-800 font-mono">
-                    {getPaymentDetails().number}
+                  <span className="text-lg font-bold text-gray-800 font-mono">
+                    {cardType === 'paypal' ? 'Included with purchase' : getPaymentDetails().number}
                   </span>
                 </div>
                 <div className="flex justify-between items-center mb-3">
@@ -344,7 +355,7 @@ export default function CreditCard({
                   <span className="text-xl font-bold text-green-600">${price}</span>
                 </div>
                 <div className="text-xs text-gray-500 text-center">
-                  Send payment and screenshot confirmation
+                  {cardType === 'paypal' ? 'Send payment and receive account details' : 'Send payment and screenshot confirmation'}
                 </div>
               </div>
               
