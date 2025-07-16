@@ -17,7 +17,7 @@ interface CardData {
   description: string;
   price: number;
   balance: number;
-  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay' | 'discover';
+  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay' | 'discover' | 'amex-gift';
   cardColor: string;
   rating: number;
   country: 'uk' | 'us' | 'germany' | 'italy' | 'canada' | 'australia';
