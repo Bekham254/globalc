@@ -7,7 +7,7 @@ interface CreditCardProps {
   description: string;
   price: number;
   balance: number;
-  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay' | 'discover';
+  cardType: 'visa' | 'mastercard' | 'amex' | 'paypal' | 'unionpay' | 'discover' | 'amex-gift';
   cardColor: string;
   rating: number;
   country: 'uk' | 'us' | 'germany' | 'italy' | 'canada' | 'australia';
@@ -125,6 +125,14 @@ export default function CreditCard({
               <rect x="16" width="16" height="16" fill="#0066CC"/>
               <rect x="32" width="16" height="16" fill="#00A651"/>
             </svg>
+          </div>
+        );
+      case 'amex-gift':
+        return (
+          <div className="bg-white px-3 py-2 rounded-lg shadow-md border">
+            <div className="text-blue-700 font-bold text-xs tracking-wide">
+              AMERICAN EXPRESS
+            </div>
           </div>
         );
       default:
@@ -245,6 +253,119 @@ export default function CreditCard({
       setIsUploading(false);
     }
   };
+
+  // Special rendering for AMEX Gift Cards to match the screenshot design
+  if (cardType === 'amex-gift') {
+    return (
+      <div className="bg-gray-900 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 border border-gray-700">
+        {/* AMEX Gift Card Visual */}
+        <div className="p-6 text-center">
+          <div className="bg-white rounded-lg p-8 mb-4 shadow-lg">
+            <div className="flex items-center justify-center mb-4">
+              <div className="bg-blue-600 text-white px-4 py-2 rounded font-bold text-lg">
+                American
+              </div>
+              <span className="text-2xl font-bold text-gray-800 ml-2">Express Gift Cards</span>
+            </div>
+            
+            {/* Gift Card Image */}
+            <div className="relative bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-lg p-4 mb-4 shadow-md">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 via-pink-300 to-blue-300 opacity-80 rounded-lg"></div>
+              <div className="relative text-white">
+                <div className="text-center mb-2">
+                  <div className="text-lg font-bold">Happy Birthday</div>
+                </div>
+                <div className="text-sm font-mono mb-2">3759 876543 21001</div>
+                <div className="text-right text-xs">$0.00</div>
+              </div>
+            </div>
+          </div>
+          
+          <h3 className="text-xl font-bold text-white mb-2">
+            AMEX Gift Card ${balance}
+          </h3>
+          <div className="text-3xl font-bold text-orange-400 mb-6">
+            ${price}
+          </div>
+          
+          {/* Payment Options */}
+          <div className="relative space-y-3">
+            {!showPaymentDetails ? (
+              <>
+                <button 
+                  onClick={() => setShowPaymentOptions(!showPaymentOptions)}
+                  className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center space-x-2"
+                >
+                  <span>Choose Payment Method</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${showPaymentOptions ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {showPaymentOptions && (
+                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-2xl z-50 overflow-hidden">
+                    {paymentOptions.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handlePaymentSelect(option.name)}
+                        className={`w-full ${option.color} ${option.textColor} font-bold py-3 px-4 flex items-center justify-center space-x-2 transition-all duration-200 hover:opacity-90`}
+                      >
+                        {option.icon}
+                        <span>Pay with {option.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-blue-200 rounded-lg p-4">
+                <div className="text-center mb-4">
+                  <div className="text-2xl mb-2">{getPaymentDetails().icon}</div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    {getPaymentDetails().title}
+                  </h3>
+                </div>
+                
+                <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-sm font-medium text-gray-600">
+                      {getPaymentDetails().label}:
+                    </span>
+                    <span className="text-lg font-bold text-gray-800 font-mono">
+                      {getPaymentDetails().number}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-sm font-medium text-gray-600">Amount:</span>
+                    <span className="text-xl font-bold text-green-600">${price}</span>
+                  </div>
+                  <div className="text-xs text-gray-500 text-center">
+                    Send payment and receive gift card details
+                  </div>
+                </div>
+                
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      setShowPaymentDetails(false);
+                      setSelectedPayment(null);
+                    }}
+                    className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleConfirmPayment}
+                    className={`flex-1 ${getPaymentDetails().color} hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg transition-all`}
+                  >
+                    Confirm Payment
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Special rendering for PayPal transfers to match the screenshot design
   if (cardType === 'paypal') {
