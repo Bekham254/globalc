@@ -9,6 +9,7 @@ interface HeaderProps {
   user: { email: string; name: string } | null;
   onLoginClick: () => void;
   onLogout: () => void;
+  onExchangeRatesClick: () => void;
 }
 
 export default function Header({ 
@@ -18,7 +19,8 @@ export default function Header({
   isLoggedIn, 
   user, 
   onLoginClick, 
-  onLogout 
+  onLogout,
+  onExchangeRatesClick
 }: HeaderProps) {
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -32,8 +34,13 @@ export default function Header({
           <div className="hidden md:flex items-center space-x-8">
             <nav className="flex space-x-6">
               <a href="#" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Home</a>
-              <a href="#" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Premium Cards</a>
-              <a href="#" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Business</a>
+              <a href="#" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Darkweb</a>
+              <button 
+                onClick={onExchangeRatesClick}
+                className="text-gray-700 hover:text-orange-600 font-medium transition-colors"
+              >
+                Exchange Rates
+              </button>
               <a href="#" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Support</a>
             </nav>
           </div>

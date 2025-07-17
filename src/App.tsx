@@ -5,6 +5,7 @@ import FilterBar from './components/FilterBar';
 import CreditCard from './components/CreditCard';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
+import ExchangeRatesModal from './components/ExchangeRatesModal';
 
 interface User {
   email: string;
@@ -31,6 +32,7 @@ export default function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isExchangeRatesModalOpen, setIsExchangeRatesModalOpen] = useState(false);
 
   // Generate cards data
   const cardsData = useMemo(() => {
@@ -90,6 +92,7 @@ export default function App() {
             : isAmexGift
             ? `American Express gift card with $${balance.toLocaleString()} balance. The safest product in carding! Cards can be used virtually anywhere American Express is accepted worldwide. Gift card funds do not expire, no fees after purchase.`
             : `Premium ${type} credit card from ${country.toUpperCase()} with $${balance.toLocaleString()} balance. High approval rate and instant delivery.`,
+            : `Darkweb ${type} debit card (2D) from ${country.toUpperCase()} with $${balance.toLocaleString()} balance. High approval rate and instant delivery.`,
           price: basePrice,
           balance,
           cardType: type,
@@ -166,6 +169,7 @@ export default function App() {
         user={user}
         onLoginClick={() => setIsLoginModalOpen(true)}
         onLogout={handleLogout}
+        onExchangeRatesClick={() => setIsExchangeRatesModalOpen(true)}
       />
       
       <Hero />
@@ -180,7 +184,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">
-            Available Cards, PayPal Transfers & Gift Cards ({filteredAndSortedCards.length})
+            Available Darkweb Cards, PayPal Transfers & Gift Cards ({filteredAndSortedCards.length})
           </h2>
         </div>
         
@@ -216,6 +220,11 @@ export default function App() {
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onLogin={handleLogin}
+      />
+      
+      <ExchangeRatesModal 
+        isOpen={isExchangeRatesModalOpen}
+        onClose={() => setIsExchangeRatesModalOpen(false)}
       />
     </div>
   );
