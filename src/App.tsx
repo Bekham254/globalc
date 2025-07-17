@@ -44,7 +44,8 @@ export default function App() {
       { type: 'amex' as const, count: 10 },
       { type: 'unionpay' as const, count: 8 },
       { type: 'discover' as const, count: 7 },
-      { type: 'paypal' as const, count: 10 } // PayPal transfers
+      { type: 'paypal' as const, count: 10 }, // PayPal transfers
+      { type: 'amex-gift' as const, count: 10 } // AMEX Gift Cards
     ];
 
     const countries: Array<'uk' | 'us' | 'germany' | 'italy' | 'canada' | 'australia'> = 
@@ -65,10 +66,13 @@ export default function App() {
       for (let i = 0; i < count; i++) {
         const country = type === 'paypal' ? 'us' : countries[Math.floor(Math.random() * countries.length)];
         const isPayPal = type === 'paypal';
+        const isAmexGift = type === 'amex-gift';
         
         // Different balance ranges for PayPal vs cards
         const balance = isPayPal 
           ? Math.floor(Math.random() * (2500 - 500) + 500) // $500-$2500 for PayPal
+          : isAmexGift
+          ? Math.floor(Math.random() * (3000 - 1000) + 1000) // $1000-$3000 for AMEX Gift Cards
           : Math.floor(Math.random() * (15000 - 1000) + 1000); // $1000-$15000 for cards
         
         // Minimum price is $34
@@ -78,9 +82,13 @@ export default function App() {
           id: id++,
           title: isPayPal 
             ? `PayPal Transfer $${balance}`
+            : isAmexGift
+            ? `AMEX Gift Card $${balance}`
             : `${type.charAt(0).toUpperCase() + type.slice(1)} ${country.toUpperCase()} Card`,
           description: isPayPal
             ? `Verified PayPal account with $${balance.toLocaleString()} transfer limit. Instant access after payment confirmation.`
+            : isAmexGift
+            ? `American Express gift card with $${balance.toLocaleString()} balance. The safest product in carding! Cards can be used virtually anywhere American Express is accepted worldwide. Gift card funds do not expire, no fees after purchase.`
             : `Premium ${type} credit card from ${country.toUpperCase()} with $${balance.toLocaleString()} balance. High approval rate and instant delivery.`,
           price: basePrice,
           balance,
