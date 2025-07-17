@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { CreditCard as CreditCardIcon, ChevronDown } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../hooks/useAuth';
 
 interface CreditCardProps {
   id: number;
@@ -155,9 +157,41 @@ export default function CreditCard({
   };
 
   const handleConfirmPayment = () => {
-    setShowPaymentDetails(false);
-    setSelectedPayment(null);
-    onAddToCart(id);
+    createOrder();
+  };
+
+  const { user } = useAuth();
+
+  const createOrder = async () => {
+    if (!user) {
+      alert('Please login to make a purchase');
+      return;
+    }
+
+    if (!selectedPayment) {
+      alert('Please select a payment method');
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-order', {
+        body: {
+          cardId: id,
+          amount: price,
+          paymentMethod: selectedPayment
+        }
+      });
+
+      if (error) throw error;
+
+      alert(`Order created successfully! Order ID: ${data.orderId}\n\nPlease send payment to the provided details and upload your screenshot.`);
+      setShowPaymentDetails(false);
+      setSelectedPayment(null);
+      onAddToCart(id);
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert('Failed to create order. Please try again.');
+    }
   };
 
   const getPaymentDetails = () => {

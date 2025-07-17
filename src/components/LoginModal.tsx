@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (email: string, password: string) => boolean;
 }
 
-export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,23 +16,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-
-  // Simple in-memory storage for demo (in real app, this would be a database)
-  const getStoredAccounts = () => {
-    const stored = localStorage.getItem('cardvault_accounts');
-    return stored ? JSON.parse(stored) : [];
-  };
-
-  const saveAccount = (email: string, password: string) => {
-    const accounts = getStoredAccounts();
-    accounts.push({ email, password, createdAt: new Date().toISOString() });
-    localStorage.setItem('cardvault_accounts', JSON.stringify(accounts));
-  };
-
-  const validateAccount = (email: string, password: string) => {
-    const accounts = getStoredAccounts();
-    return accounts.some((account: any) => account.email === email && account.password === password);
-  };
+  const { signUp, signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,40 +49,31 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
         return;
       }
 
-      // Check if account already exists
-      const accounts = getStoredAccounts();
-      if (accounts.some((account: any) => account.email === email)) {
-        setError('Account with this email already exists');
-        setIsLoading(false);
-        return;
-      }
-
-      // Create new account
-      setTimeout(() => {
-        saveAccount(email, password);
+      try {
+        const name = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
+        await signUp(email, password, name);
         setError('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        setIsSignUp(false);
+        onClose();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to create account');
+      } finally {
         setIsLoading(false);
-        alert('Account created successfully! Please log in.');
-      }, 1000);
+      }
     } else {
-      // Login
-      setTimeout(() => {
-        if (validateAccount(email, password)) {
-          const success = onLogin(email, password);
-          if (success) {
-            setEmail('');
-            setPassword('');
-            setError('');
-          }
-        } else {
-          setError('Invalid email or password. Please create an account first.');
-        }
+      try {
+        await signIn(email, password);
+        setEmail('');
+        setPassword('');
+        setError('');
+        onClose();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Invalid email or password');
+      } finally {
         setIsLoading(false);
-      }, 1000);
+      }
     }
   };
 

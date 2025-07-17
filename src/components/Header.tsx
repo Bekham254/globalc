@@ -1,14 +1,12 @@
 import React from 'react';
 import { ShoppingCart, Search, Menu, CreditCard, User, LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 interface HeaderProps {
   cartCount: number;
   searchTerm: string;
   onSearchChange: (term: string) => void;
-  isLoggedIn: boolean;
-  user: { email: string; name: string } | null;
   onLoginClick: () => void;
-  onLogout: () => void;
   onExchangeRatesClick: () => void;
 }
 
@@ -16,12 +14,19 @@ export default function Header({
   cartCount, 
   searchTerm, 
   onSearchChange, 
-  isLoggedIn, 
-  user, 
   onLoginClick, 
-  onLogout,
   onExchangeRatesClick
 }: HeaderProps) {
+  const { user, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,14 +72,14 @@ export default function Header({
             </button>
 
             {/* Login/User Section */}
-            {isLoggedIn && user ? (
+            {user ? (
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
                   <User className="w-5 h-5 text-gray-600" />
-                  <span className="text-sm font-medium text-gray-700">{user.name}</span>
+                  <span className="text-sm font-medium text-gray-700">{user.email?.split('@')[0]}</span>
                 </div>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:text-red-600 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
