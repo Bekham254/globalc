@@ -91,7 +91,6 @@ export default function App() {
             ? `Verified PayPal account with $${balance.toLocaleString()} transfer limit. Instant access after payment confirmation.`
             : isAmexGift
             ? `American Express gift card with $${balance.toLocaleString()} balance. The safest product in carding! Cards can be used virtually anywhere American Express is accepted worldwide. Gift card funds do not expire, no fees after purchase.`
-            : `Premium ${type} credit card from ${country.toUpperCase()} with $${balance.toLocaleString()} balance. High approval rate and instant delivery.`,
             : `Darkweb ${type} debit card (2D) from ${country.toUpperCase()} with $${balance.toLocaleString()} balance. High approval rate and instant delivery.`,
           price: basePrice,
           balance,
