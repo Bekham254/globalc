@@ -504,7 +504,7 @@ export default function CreditCard({
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 border border-gray-200">
       {/* Credit Card Visual */}
-      <div className="relative p-4">
+      <div className="relative p-6">
         <div className={`${cardColor} rounded-lg p-4 text-white relative overflow-hidden shadow-xl`}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-5 rounded-full -mr-12 -mt-12"></div>
           <div className="absolute bottom-0 left-0 w-16 h-16 bg-white opacity-5 rounded-full -ml-8 -mb-8"></div>
@@ -541,14 +541,25 @@ export default function CreditCard({
         </div>
       </div>
       
-      <div className="p-4">
+      <div className="p-6">
         {/* Card balance and price */}
         <div className="text-center mb-4">
-          <div className="text-lg font-bold text-gray-800 mb-1">
+          <h3 className="text-xl font-bold text-gray-800 mb-2">
+            {title}
+          </h3>
+          <div className="text-lg font-semibold text-gray-600 mb-1">
             Balance ${balance.toLocaleString()}
           </div>
-          <div className="text-2xl font-bold text-green-600">
+          <div className="text-3xl font-bold text-orange-500 mb-2">
             ${price}
+          </div>
+          <div className="flex items-center justify-center mb-4">
+            <div className="flex text-yellow-400">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className={i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"}>★</span>
+              ))}
+            </div>
+            <span className="text-sm text-gray-600 ml-2">({rating})</span>
           </div>
         </div>
             
