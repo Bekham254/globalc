@@ -48,7 +48,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">
-            Available Darkweb Cards, PayPal Transfers & Gift Cards ({filteredAndSortedCards.length})
+            Available Darkweb Cards, PayPal Transfers & Gift Cards (85)
           </h2>
         </div>
         
