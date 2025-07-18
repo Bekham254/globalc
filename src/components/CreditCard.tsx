@@ -92,24 +92,15 @@ export default function CreditCard({
     switch (cardType) {
       case 'visa':
         return (
-          <div className="bg-white px-3 py-2 rounded-lg shadow-md border">
-            <div className="text-blue-800 font-bold text-lg tracking-wider">VISA</div>
-          </div>
+          <div className="text-white font-bold text-2xl tracking-wider">VISA</div>
         );
       case 'mastercard':
         return (
-          <div className="bg-white px-3 py-2 rounded-lg shadow-md border flex items-center">
-            <div className="w-7 h-7 bg-red-500 rounded-full"></div>
-            <div className="w-7 h-7 bg-yellow-400 rounded-full -ml-3"></div>
-          </div>
+          <div className="text-white font-bold text-xl tracking-wider">Mastercard</div>
         );
       case 'amex':
         return (
-          <div className="bg-white px-3 py-2 rounded-lg shadow-md border">
-            <div className="text-blue-700 font-bold text-xs tracking-wide">
-              AMERICAN EXPRESS
-            </div>
-          </div>
+          <div className="text-white font-bold text-2xl tracking-wider">AMEX</div>
         );
       case 'paypal':
         return (
@@ -146,8 +137,16 @@ export default function CreditCard({
     if (cardType === 'paypal') {
       return 'account@paypal.com';
     }
-    const baseNumber = cardType === 'amex' ? '3*** ******* *****' : '**** **** **** ****';
-    return baseNumber;
+    
+    // Generate realistic card numbers based on type
+    if (cardType === 'visa') {
+      return '4929 **** **** 2213';
+    } else if (cardType === 'mastercard') {
+      return '5505 **** **** 0516';
+    } else if (cardType === 'amex') {
+      return '3400 **** **** 7866';
+    }
+    return '**** **** **** ****';
   };
 
   const handlePaymentSelect = (paymentMethod: string) => {
@@ -285,6 +284,32 @@ export default function CreditCard({
       alert('Upload failed. Please try again.');
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const getCardColor = () => {
+    switch (cardType) {
+      case 'visa':
+        return 'bg-gradient-to-br from-blue-600 to-blue-800';
+      case 'mastercard':
+        return 'bg-gradient-to-br from-red-600 to-red-800';
+      case 'amex':
+        return 'bg-gradient-to-br from-blue-600 to-blue-800';
+      default:
+        return cardColor;
+    }
+  };
+
+  const getCardholderName = () => {
+    switch (cardType) {
+      case 'visa':
+        return 'ALEX JOHNSON';
+      case 'mastercard':
+        return 'SARAH WILSON';
+      case 'amex':
+        return 'MIKE BROWN';
+      default:
+        return 'CARDHOLDER NAME';
     }
   };
 
@@ -505,25 +530,39 @@ export default function CreditCard({
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 border border-gray-200">
       {/* Credit Card Visual */}
       <div className="relative p-6">
-        <div className={`${cardColor} rounded-lg p-4 text-white relative overflow-hidden shadow-xl`}>
-          <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-5 rounded-full -mr-12 -mt-12"></div>
-          <div className="absolute bottom-0 left-0 w-16 h-16 bg-white opacity-5 rounded-full -ml-8 -mb-8"></div>
-          
-          {/* Country Flag in top-left corner */}
-          <div className="absolute top-3 left-3">
-            <span className="text-3xl">{countryFlags[country]}</span>
+        {/* Country and Card Type Header */}
+        <div className="flex items-center justify-between mb-4 px-2">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl">{countryFlags[country]}</span>
+            <span className="text-gray-700 font-medium capitalize">
+              {country === 'us' ? 'United States' : 
+               country === 'uk' ? 'United Kingdom' : 
           </div>
           
-          <div className="flex justify-between items-start mb-6">
-            <CreditCardIcon className="w-6 h-6 text-white opacity-80" />
-            {getCardLogo()}
-          </div>
-          
-          <div className="mb-4">
-            <div className="text-xl font-mono tracking-wider mb-2 font-bold">
+          {/* Card Number */}
+          <div className="mb-8">
+            <div className="text-2xl font-mono tracking-wider font-bold">
               {formatCardNumber()}
             </div>
-            <div className="flex justify-between text-sm">
+          </div>
+          
+          {/* Card Details */}
+          <div className="flex justify-between items-end">
+            <div>
+              <div className="text-xs opacity-80 mb-1">CARDHOLDER</div>
+              <div className="font-bold text-sm">{getCardholderName()}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xs opacity-80 mb-1">VALID THRU</div>
+              <div className="font-bold text-sm">12/26</div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs opacity-80 mb-1">CVV</div>
+              <div className="font-bold text-sm">***</div>
+            </div>
+          </div>
+        </div>
+      </div>
               <div>
                 <div className="text-xs opacity-70">VALID THRU</div>
                 <div className="font-mono font-bold">12/28</div>
