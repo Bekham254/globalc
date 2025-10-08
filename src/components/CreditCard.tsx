@@ -121,20 +121,8 @@ export default function CreditCard({
           </div>
 
           <h3 className="font-bold text-lg mb-2">{title}</h3>
-          <p className="text-gray-600 text-sm mb-4">{description}</p>
           
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                  }`}
-                />
-              ))}
-              <span className="ml-2 text-sm text-gray-600">({rating})</span>
-            </div>
             <div className="text-2xl font-bold text-orange-600">${price}</div>
           </div>
           
@@ -186,20 +174,8 @@ export default function CreditCard({
           </div>
 
           <h3 className="font-bold text-lg mb-2">{title}</h3>
-          <p className="text-gray-600 text-sm mb-4">{description}</p>
           
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                  }`}
-                />
-              ))}
-              <span className="ml-2 text-sm text-gray-600">({rating})</span>
-            </div>
             <div className="text-2xl font-bold text-orange-600">${price}</div>
           </div>
           
@@ -251,20 +227,8 @@ export default function CreditCard({
         </div>
 
         <h3 className="font-bold text-lg mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm mb-4">{description}</p>
         
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-4 h-4 ${
-                  i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                }`}
-              />
-            ))}
-            <span className="ml-2 text-sm text-gray-600">({rating})</span>
-          </div>
           <div className="text-2xl font-bold text-orange-600">${price}</div>
         </div>
         
