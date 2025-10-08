@@ -111,13 +111,9 @@ export default function CreditCard({
           <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-lg p-6 text-white mb-4">
             <div className="flex justify-between items-start mb-4">
               <div className="text-2xl font-bold">PayPal</div>
-              <div className="text-right">
-                <div className="text-sm opacity-75">Balance</div>
-                <div className="text-xl font-bold">${balance.toLocaleString()}</div>
-              </div>
             </div>
             <div className="text-lg font-mono">{getCardholderName('paypal')}</div>
-            <div className="text-sm opacity-75 mt-2">Instant Transfer Available</div>
+            <div className="text-sm opacity-75 mt-2">Balance: ${balance.toLocaleString()}</div>
           </div>
 
           <h3 className="font-bold text-lg mb-2">{title}</h3>
