@@ -140,9 +140,9 @@ export default function CreditCard({
           
           <button
             onClick={() => onAddToCart(id)}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold"
+            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
           >
-            Add to Cart
+            Buy with USDT
           </button>
         </div>
       </div>
@@ -205,9 +205,9 @@ export default function CreditCard({
           
           <button
             onClick={() => onAddToCart(id)}
-            className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-semibold"
+            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
           >
-            Add to Cart
+            Buy with USDT
           </button>
         </div>
       </div>
@@ -270,9 +270,9 @@ export default function CreditCard({
         
         <button
           onClick={() => onAddToCart(id)}
-          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold"
+          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
         >
-          Add to Cart
+          Buy with USDT
         </button>
       </div>
     </div>

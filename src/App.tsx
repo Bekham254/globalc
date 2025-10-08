@@ -27,7 +27,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       <Header 
         cartCount={cartCount}
         searchTerm={searchTerm}
@@ -47,14 +47,14 @@ export default function App() {
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-3xl font-bold text-green-400">
             Available Darkweb Cards, PayPal Transfers & Gift Cards (85)
           </h2>
         </div>
         
         {loading ? (
           <div className="text-center py-12">
-            <div className="text-gray-500 text-xl mb-4">Loading cards...</div>
+            <div className="text-green-400 text-xl mb-4">Loading cards...</div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -78,8 +78,8 @@ export default function App() {
         
         {filteredAndSortedCards.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-500 text-xl mb-4">No cards found</div>
-            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+            <div className="text-green-400 text-xl mb-4">No cards found</div>
+            <p className="text-gray-500">Try adjusting your search or filter criteria</p>
           </div>
         )}
       </main>

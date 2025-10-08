@@ -10,17 +10,17 @@ interface FilterBarProps {
 
 export default function FilterBar({ selectedCountry, onCountryChange, sortBy, onSortChange }: FilterBarProps) {
   return (
-    <div className="bg-white shadow-sm border-b border-gray-200 py-4">
+    <div className="bg-gray-800 border-b border-gray-700 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
           <div className="flex items-center space-x-4">
-            <Filter className="w-5 h-5 text-gray-500" />
-            <span className="text-gray-700 font-medium">Filter by:</span>
+            <Filter className="w-5 h-5 text-gray-400" />
+            <span className="text-gray-300 font-medium">Filter by:</span>
             
             <select 
               value={selectedCountry}
               onChange={(e) => onCountryChange(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="bg-gray-700 border border-gray-600 text-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="all">All Countries</option>
               <option value="us">🇺🇸 United States</option>
@@ -33,11 +33,11 @@ export default function FilterBar({ selectedCountry, onCountryChange, sortBy, on
           </div>
           
           <div className="flex items-center space-x-4">
-            <span className="text-gray-700 font-medium">Sort by:</span>
+            <span className="text-gray-300 font-medium">Sort by:</span>
             <select 
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="bg-gray-700 border border-gray-600 text-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="name">Name</option>
               <option value="price-low">Price: Low to High</option>
