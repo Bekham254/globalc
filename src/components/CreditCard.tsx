@@ -167,6 +167,7 @@ export default function CreditCard({
                 <div className="font-semibold">***</div>
               </div>
             </div>
+            <div className="text-sm opacity-75 mt-2">Balance: ${balance.toLocaleString()}</div>
           </div>
 
           <h3 className="font-bold text-lg mb-2">{title}</h3>
@@ -220,6 +221,7 @@ export default function CreditCard({
               <div className="font-semibold">***</div>
             </div>
           </div>
+          <div className="text-sm opacity-75 mt-2">Balance: ${balance.toLocaleString()}</div>
         </div>
 
         <h3 className="font-bold text-lg mb-2">{title}</h3>
