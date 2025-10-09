@@ -33,23 +33,22 @@ export default function ScreenshotUpload() {
     setIsUploading(true);
     
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append('screenshot', selectedFile);
-      formData.append('timestamp', new Date().toISOString());
       formData.append('customerEmail', 'customer@example.com'); // In real app, get from user session
+      formData.append('orderDetails', 'Payment screenshot for card purchase');
       
-      // Simulate API call to send email with screenshot
-      // In a real application, this would call your backend API
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // For demo purposes, we'll show success
-      // In real implementation, this would send to cardvaulter@gmail.com
-      console.log('Screenshot would be sent to cardvaulter@gmail.com with details:', {
-        fileName: selectedFile.name,
-        fileSize: selectedFile.size,
-        timestamp: new Date().toISOString()
+      // Call the edge function to send email
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-screenshot-email`, {
+        method: 'POST',
+        body: formData,
       });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send screenshot');
+      }
       
       setUploadSuccess(true);
       setTimeout(() => {
@@ -58,7 +57,7 @@ export default function ScreenshotUpload() {
       }, 3000);
       
     } catch (error) {
-      alert('Upload failed. Please try again.');
+      alert(`Upload failed: ${error instanceof Error ? error.message : 'Please try again.'}`);
     } finally {
       setIsUploading(false);
     }
