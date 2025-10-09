@@ -6,6 +6,7 @@ import CreditCard from './components/CreditCard';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import ExchangeRatesModal from './components/ExchangeRatesModal';
+import ScreenshotUpload from './components/ScreenshotUpload';
 import { useCards } from './hooks/useCards';
 import { useAuth } from './hooks/useAuth';
 
@@ -82,6 +83,11 @@ export default function App() {
             <p className="text-gray-500">Try adjusting your search or filter criteria</p>
           </div>
         )}
+        
+        {/* Payment Screenshot Upload Section */}
+        <div className="mt-16">
+          <ScreenshotUpload />
+        </div>
       </main>
       
       <Footer />
