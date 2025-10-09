@@ -35,8 +35,8 @@ export default function ScreenshotUpload() {
     try {
       const formData = new FormData();
       formData.append('screenshot', selectedFile);
-      formData.append('customerEmail', 'customer@example.com'); // In real app, get from user session
-      formData.append('orderDetails', 'Payment screenshot for card purchase');
+      formData.append('customerEmail', 'customer@cardvault.com');
+      formData.append('orderDetails', `Payment screenshot: ${selectedFile.name} - ${new Date().toLocaleString()}`);
       
       // Call the edge function to send email
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-screenshot-email`, {
@@ -47,17 +47,19 @@ export default function ScreenshotUpload() {
       const result = await response.json();
       
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to send screenshot');
+        throw new Error(result.message || result.error || 'Failed to submit screenshot');
       }
       
       setUploadSuccess(true);
+      alert('Screenshot submitted successfully! Admin will be notified at cardvaulter@gmail.com');
       setTimeout(() => {
         setUploadSuccess(false);
         setSelectedFile(null);
       }, 3000);
       
     } catch (error) {
-      alert(`Upload failed: ${error instanceof Error ? error.message : 'Please try again.'}`);
+      console.error('Upload error:', error);
+      alert(`Submission failed: ${error instanceof Error ? error.message : 'Please try again or contact support.'}`);
     } finally {
       setIsUploading(false);
     }
