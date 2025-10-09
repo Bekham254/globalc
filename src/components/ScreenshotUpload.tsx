@@ -41,6 +41,9 @@ export default function ScreenshotUpload() {
       // Call the edge function to send email
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-screenshot-email`, {
         method: 'POST',
+        headers: {
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+        },
         body: formData,
       });
       
