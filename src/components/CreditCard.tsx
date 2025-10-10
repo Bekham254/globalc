@@ -14,6 +14,18 @@ interface CreditCardProps {
   onAddToCart: (id: number) => void;
 }
 
+const USDT_TRC20_ADDRESS = "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE";
+
+const handleUSDTPayment = (cardTitle: string, price: number) => {
+  const message = `Payment for: ${cardTitle}\nAmount: $${price} USDT\nSend to: ${USDT_TRC20_ADDRESS}\n\nAfter payment, please upload your screenshot below.`;
+  
+  // Copy address to clipboard
+  navigator.clipboard.writeText(USDT_TRC20_ADDRESS).then(() => {
+    alert(`USDT TRC-20 Address copied to clipboard!\n\n${message}`);
+  }).catch(() => {
+    alert(message);
+  });
+};
 const getCountryFlag = (country: string) => {
   const flags: { [key: string]: string } = {
     'us': '🇺🇸',
