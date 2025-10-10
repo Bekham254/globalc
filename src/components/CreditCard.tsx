@@ -12,20 +12,9 @@ interface CreditCardProps {
   rating: number;
   country: string;
   onAddToCart: (id: number) => void;
+  onSelectForPayment: (card: { id: number; title: string; price: number }) => void;
 }
 
-const USDT_TRC20_ADDRESS = "TBc4q4B9y8zYCAm7k67mpTjjQbdaLztwiF";
-
-const handleUSDTPayment = (cardTitle: string, price: number) => {
-  const message = `Payment for: ${cardTitle}\nAmount: $${price} USDT\nSend to: ${USDT_TRC20_ADDRESS}\n\nAfter payment, please upload your screenshot below.`;
-  
-  // Copy address to clipboard
-  navigator.clipboard.writeText(USDT_TRC20_ADDRESS).then(() => {
-    alert(`USDT TRC-20 Address copied to clipboard!\n\n${message}`);
-  }).catch(() => {
-    alert(message);
-  });
-};
 const getCountryFlag = (country: string) => {
   const flags: { [key: string]: string } = {
     'us': '🇺🇸',
@@ -101,7 +90,8 @@ export default function CreditCard({
   cardColor,
   rating,
   country,
-  onAddToCart
+  onAddToCart,
+  onSelectForPayment
 }: CreditCardProps) {
   const isPayPal = cardType.toLowerCase().includes('paypal');
   const isGiftCard = cardType.toLowerCase().includes('gift');
