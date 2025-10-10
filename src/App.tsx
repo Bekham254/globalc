@@ -84,6 +84,11 @@ export default function App() {
           </div>
         )}
         
+        {/* USDT Payment Section */}
+        <div id="payment-section" className="mt-16">
+          <USDTPaymentSection selectedCard={selectedCardForPayment} />
+        </div>
+        
         {/* Payment Screenshot Upload Section */}
         <div className="mt-16">
           <ScreenshotUpload />

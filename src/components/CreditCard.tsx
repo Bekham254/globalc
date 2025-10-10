@@ -239,12 +239,11 @@ export default function CreditCard({
         </div>
         
         <button
-          onClick={() => handleUSDTPayment(title, price)}
+          onClick={() => onSelectForPayment({ id, title, price })}
           className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
         >
           <div className="flex items-center justify-center space-x-2">
-            <Copy className="w-4 h-4" />
-            <span>Buy with USDT</span>
+            <span>Select for Payment</span>
           </div>
         </button>
       </div>
