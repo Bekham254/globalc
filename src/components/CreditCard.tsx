@@ -14,7 +14,7 @@ interface CreditCardProps {
   onAddToCart: (id: number) => void;
 }
 
-const USDT_TRC20_ADDRESS = "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE";
+const USDT_TRC20_ADDRESS = "TBc4q4B9y8zYCAm7k67mpTjjQbdaLztwiF";
 
 const handleUSDTPayment = (cardTitle: string, price: number) => {
   const message = `Payment for: ${cardTitle}\nAmount: $${price} USDT\nSend to: ${USDT_TRC20_ADDRESS}\n\nAfter payment, please upload your screenshot below.`;
