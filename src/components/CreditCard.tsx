@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, CreditCard as CreditCardIcon } from 'lucide-react';
+import { Star, CreditCard as CreditCardIcon, Copy } from 'lucide-react';
 
 interface CreditCardProps {
   id: number;
@@ -135,10 +135,13 @@ export default function CreditCard({
           </div>
           
           <button
-            onClick={() => onAddToCart(id)}
+            onClick={() => handleUSDTPayment(title, price)}
             className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
           >
-            Buy with USDT
+            <div className="flex items-center justify-center space-x-2">
+              <Copy className="w-4 h-4" />
+              <span>Buy with USDT</span>
+            </div>
           </button>
         </div>
       </div>
@@ -189,10 +192,13 @@ export default function CreditCard({
           </div>
           
           <button
-            onClick={() => onAddToCart(id)}
+            onClick={() => handleUSDTPayment(title, price)}
             className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
           >
-            Buy with USDT
+            <div className="flex items-center justify-center space-x-2">
+              <Copy className="w-4 h-4" />
+              <span>Buy with USDT</span>
+            </div>
           </button>
         </div>
       </div>
@@ -243,10 +249,13 @@ export default function CreditCard({
         </div>
         
         <button
-          onClick={() => onAddToCart(id)}
+          onClick={() => handleUSDTPayment(title, price)}
           className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
         >
-          Buy with USDT
+          <div className="flex items-center justify-center space-x-2">
+            <Copy className="w-4 h-4" />
+            <span>Buy with USDT</span>
+          </div>
         </button>
       </div>
     </div>
