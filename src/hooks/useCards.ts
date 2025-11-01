@@ -29,29 +29,46 @@ export function useCards(searchTerm: string, selectedCountry: string, sortBy: st
       setLoading(true)
       setError(null)
 
-      // Construct the Edge Function URL with query parameters
-      const functionUrl = `${supabase.supabaseUrl}/functions/v1/get-cards`
-      const params = new URLSearchParams()
-      if (selectedCountry !== 'all') params.append('country', selectedCountry)
-      if (searchTerm) params.append('search', searchTerm)
-      if (sortBy) params.append('sortBy', sortBy)
-      
-      const urlWithParams = params.toString() ? `${functionUrl}?${params.toString()}` : functionUrl
-      
-      const response = await fetch(urlWithParams, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${supabase.supabaseKey}`,
-          'Content-Type': 'application/json',
-        },
-      })
+      // Use direct Supabase query instead of Edge Function
+      let query = supabase
+        .from('cards')
+        .select('*')
+        .eq('is_available', true)
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Apply filters
+      if (selectedCountry && selectedCountry !== 'all') {
+        query = query.eq('country', selectedCountry)
       }
 
-      const data = await response.json()
-      setCards(data.cards || [])
+      if (searchTerm) {
+        query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
+      }
+
+      // Apply sorting
+      switch (sortBy) {
+        case 'price-low':
+          query = query.order('price', { ascending: true })
+          break
+        case 'price-high':
+          query = query.order('price', { ascending: false })
+          break
+        case 'balance':
+          query = query.order('balance', { ascending: false })
+          break
+        case 'rating':
+          query = query.order('rating', { ascending: false })
+          break
+        default:
+          query = query.order('title', { ascending: true })
+      }
+
+      const { data, error: queryError } = await query
+
+      if (queryError) {
+        throw queryError
+      }
+
+      setCards(data || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch cards')
       console.error('Error fetching cards:', err)
