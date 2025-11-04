@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Star, CreditCard as CreditCardIcon, Copy, Plus, Minus } from 'lucide-react';
+import React from 'react';
+import { Star, CreditCard as CreditCardIcon, Copy } from 'lucide-react';
 
 interface CreditCardProps {
   id: number;
@@ -93,17 +93,8 @@ export default function CreditCard({
   onAddToCart,
   onSelectForPayment
 }: CreditCardProps) {
-  const [currentBalance, setCurrentBalance] = useState(balance);
   const isPayPal = cardType.toLowerCase().includes('paypal');
   const isGiftCard = cardType.toLowerCase().includes('gift');
-
-  const handleAddBalance = () => {
-    setCurrentBalance(prev => prev + 500);
-  };
-
-  const handleRemoveBalance = () => {
-    setCurrentBalance(prev => Math.max(0, prev - 500));
-  };
 
   if (isPayPal) {
     return (
@@ -130,36 +121,12 @@ export default function CreditCard({
 
         <div className="text-center mb-6">
           <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-          <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
+          <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center">
           <div className="text-4xl font-bold text-red-500">${price}</div>
         </div>
-
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={handleAddBalance}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add
-          </button>
-          <button
-            onClick={handleRemoveBalance}
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-          >
-            <Minus className="w-4 h-4" />
-            Remove
-          </button>
-        </div>
-
-        <button
-          onClick={() => handleUSDTPayment(title, price)}
-          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
-        >
-          Buy with USDT
-        </button>
       </div>
     );
   }
@@ -173,66 +140,28 @@ export default function CreditCard({
             <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
           </div>
           <div className="bg-gray-700 px-4 py-2 rounded-full">
-            <span className="text-gray-200 font-semibold text-sm">AMEX</span>
+            <span className="text-gray-200 font-semibold text-sm">GIFT CARD</span>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-orange-400 to-yellow-500 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
           <div className="flex justify-between items-start">
-            <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
-            <div className="text-2xl font-bold">AMEX</div>
+            <div className="w-12 h-8 bg-yellow-300 rounded-lg"></div>
+            <div className="text-2xl font-bold">{title}</div>
           </div>
           <div>
-            <div className="text-lg font-mono tracking-widest mb-4">{getCardNumber('amex')}</div>
-            <div className="flex justify-between">
-              <div>
-                <div className="text-xs opacity-75">CARDHOLDER</div>
-                <div className="font-semibold">{getCardholderName('amex')}</div>
-              </div>
-              <div>
-                <div className="text-xs opacity-75">VALID THRU</div>
-                <div className="font-semibold">12/26</div>
-              </div>
-              <div>
-                <div className="text-xs opacity-75">CVV</div>
-                <div className="font-semibold">***</div>
-              </div>
-            </div>
+            <div className="text-lg font-mono tracking-widest">{getCardholderName('gift')}</div>
           </div>
         </div>
 
         <div className="text-center mb-6">
           <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-          <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
+          <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center">
           <div className="text-4xl font-bold text-red-500">${price}</div>
         </div>
-
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={handleAddBalance}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add
-          </button>
-          <button
-            onClick={handleRemoveBalance}
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-          >
-            <Minus className="w-4 h-4" />
-            Remove
-          </button>
-        </div>
-
-        <button
-          onClick={() => handleUSDTPayment(title, price)}
-          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
-        >
-          Buy with USDT
-        </button>
       </div>
     );
   }
@@ -276,36 +205,12 @@ export default function CreditCard({
 
       <div className="text-center mb-6">
         <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-        <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
+        <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
       </div>
 
-      <div className="text-center mb-6">
+      <div className="text-center">
         <div className="text-4xl font-bold text-red-500">${price}</div>
       </div>
-
-      <div className="flex gap-2 mb-4">
-        <button
-          onClick={handleAddBalance}
-          className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Add
-        </button>
-        <button
-          onClick={handleRemoveBalance}
-          className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-        >
-          <Minus className="w-4 h-4" />
-          Remove
-        </button>
-      </div>
-
-      <button
-        onClick={() => onSelectForPayment({ id, title, price })}
-        className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
-      >
-        Select for Payment
-      </button>
     </div>
   );
 }
