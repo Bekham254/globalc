@@ -107,172 +107,87 @@ export default function CreditCard({
 
   if (isPayPal) {
     return (
-      <div>
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl">{getCountryFlag(country)}</span>
-                <span className="font-semibold text-gray-700">{getCountryName(country)}</span>
-              </div>
-              <div className="bg-blue-100 px-3 py-1 rounded-full">
-                <span className="text-blue-800 font-semibold text-sm">PayPal</span>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-lg p-6 text-white mb-4">
-              <div className="flex justify-between items-start mb-4">
-                <div className="text-2xl font-bold">PayPal</div>
-              </div>
-              <div className="text-lg font-mono">{getCardholderName('paypal')}</div>
-            </div>
-
-            <h3 className="font-bold text-lg mb-2">{title}</h3>
-
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-2xl font-bold text-orange-600">${price}</div>
-            </div>
-
-            <button
-              onClick={() => handleUSDTPayment(title, price)}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
-            >
-              <div className="flex items-center justify-center space-x-2">
-                <Copy className="w-4 h-4" />
-                <span>Buy with USDT</span>
-              </div>
-            </button>
+      <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl">{getCountryFlag(country)}</span>
+            <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+          </div>
+          <div className="bg-gray-700 px-4 py-2 rounded-full">
+            <span className="text-gray-200 font-semibold text-sm">PayPal</span>
           </div>
         </div>
-        <div className="mt-4 bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-gray-300 font-semibold">Balance: ${currentBalance.toLocaleString()}</span>
+
+        <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
+            <div className="text-2xl font-bold">PayPal</div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleAddBalance}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add $500
-            </button>
-            <button
-              onClick={handleRemoveBalance}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-            >
-              <Minus className="w-4 h-4" />
-              Remove $500
-            </button>
+          <div>
+            <div className="text-lg font-mono tracking-widest">{getCardholderName('paypal')}</div>
           </div>
         </div>
+
+        <div className="text-center mb-6">
+          <div className="text-gray-400 text-sm mb-2">Total Balance</div>
+          <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
+        </div>
+
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-red-500">${price}</div>
+        </div>
+
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={handleAddBalance}
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add
+          </button>
+          <button
+            onClick={handleRemoveBalance}
+            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
+          >
+            <Minus className="w-4 h-4" />
+            Remove
+          </button>
+        </div>
+
+        <button
+          onClick={() => handleUSDTPayment(title, price)}
+          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
+        >
+          Buy with USDT
+        </button>
       </div>
     );
   }
 
   if (isGiftCard) {
     return (
-      <div>
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl">{getCountryFlag(country)}</span>
-                <span className="font-semibold text-gray-700">{getCountryName(country)}</span>
-              </div>
-              <div className="bg-purple-100 px-3 py-1 rounded-full">
-                <span className="text-purple-800 font-semibold text-sm">AMEX</span>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg p-6 text-white mb-4">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-8 h-6 bg-yellow-400 rounded"></div>
-                <div className="text-xl font-bold">AMEX</div>
-              </div>
-              <div className="text-lg font-mono mb-4">{getCardNumber('amex')}</div>
-              <div className="flex justify-between items-end">
-                <div>
-                  <div className="text-xs opacity-75">CARDHOLDER</div>
-                  <div className="font-semibold">{getCardholderName('amex')}</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75">VALID THRU</div>
-                  <div className="font-semibold">12/26</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75">CVV</div>
-                  <div className="font-semibold">***</div>
-                </div>
-              </div>
-            </div>
-
-            <h3 className="font-bold text-lg mb-2">{title}</h3>
-
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-2xl font-bold text-orange-600">${price}</div>
-            </div>
-
-            <button
-              onClick={() => handleUSDTPayment(title, price)}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
-            >
-              <div className="flex items-center justify-center space-x-2">
-                <Copy className="w-4 h-4" />
-                <span>Buy with USDT</span>
-              </div>
-            </button>
+      <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl">{getCountryFlag(country)}</span>
+            <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+          </div>
+          <div className="bg-gray-700 px-4 py-2 rounded-full">
+            <span className="text-gray-200 font-semibold text-sm">AMEX</span>
           </div>
         </div>
-        <div className="mt-4 bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-gray-300 font-semibold">Balance: ${currentBalance.toLocaleString()}</span>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleAddBalance}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add $500
-            </button>
-            <button
-              onClick={handleRemoveBalance}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
-            >
-              <Minus className="w-4 h-4" />
-              Remove $500
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
-  // Regular credit/debit cards
-  return (
-    <div>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl">{getCountryFlag(country)}</span>
-              <span className="font-semibold text-gray-700">{getCountryName(country)}</span>
-            </div>
-            <div className="bg-gray-100 px-3 py-1 rounded-full">
-              <span className="text-gray-800 font-semibold text-sm">{cardType.toUpperCase()}</span>
-            </div>
+        <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
+            <div className="text-2xl font-bold">AMEX</div>
           </div>
-
-          <div className={`bg-gradient-to-r ${getCardColors(cardType)} rounded-lg p-6 text-white mb-4`}>
-            <div className="flex justify-between items-start mb-4">
-              <div className="w-8 h-6 bg-yellow-400 rounded"></div>
-              <div className="text-xl font-bold">{cardType.toUpperCase()}</div>
-            </div>
-            <div className="text-lg font-mono mb-4">{getCardNumber(cardType)}</div>
-            <div className="flex justify-between items-end">
+          <div>
+            <div className="text-lg font-mono tracking-widest mb-4">{getCardNumber('amex')}</div>
+            <div className="flex justify-between">
               <div>
                 <div className="text-xs opacity-75">CARDHOLDER</div>
-                <div className="font-semibold">{getCardholderName(cardType)}</div>
+                <div className="font-semibold">{getCardholderName('amex')}</div>
               </div>
               <div>
                 <div className="text-xs opacity-75">VALID THRU</div>
@@ -284,44 +199,113 @@ export default function CreditCard({
               </div>
             </div>
           </div>
-
-          <h3 className="font-bold text-lg mb-2">{title}</h3>
-
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl font-bold text-orange-600">${price}</div>
-          </div>
-
-          <button
-            onClick={() => onSelectForPayment({ id, title, price })}
-            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold border border-green-500"
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <span>Select for Payment</span>
-            </div>
-          </button>
         </div>
-      </div>
-      <div className="mt-4 bg-gray-800 rounded-lg p-4 border border-gray-700">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-gray-300 font-semibold">Balance: ${currentBalance.toLocaleString()}</span>
+
+        <div className="text-center mb-6">
+          <div className="text-gray-400 text-sm mb-2">Total Balance</div>
+          <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
         </div>
-        <div className="flex gap-2">
+
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-red-500">${price}</div>
+        </div>
+
+        <div className="flex gap-2 mb-4">
           <button
             onClick={handleAddBalance}
             className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Add $500
+            Add
           </button>
           <button
             onClick={handleRemoveBalance}
             className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
           >
             <Minus className="w-4 h-4" />
-            Remove $500
+            Remove
           </button>
         </div>
+
+        <button
+          onClick={() => handleUSDTPayment(title, price)}
+          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
+        >
+          Buy with USDT
+        </button>
       </div>
+    );
+  }
+
+  // Regular credit/debit cards
+  return (
+    <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <span className="text-3xl">{getCountryFlag(country)}</span>
+          <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+        </div>
+        <div className="bg-gray-700 px-4 py-2 rounded-full">
+          <span className="text-gray-200 font-semibold text-sm">{cardType.toUpperCase()}</span>
+        </div>
+      </div>
+
+      <div className={`bg-gradient-to-br ${getCardColors(cardType)} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between`}>
+        <div className="flex justify-between items-start">
+          <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
+          <div className="text-2xl font-bold">{cardType.toUpperCase()}</div>
+        </div>
+        <div>
+          <div className="text-lg font-mono tracking-widest mb-4">{getCardNumber(cardType)}</div>
+          <div className="flex justify-between">
+            <div>
+              <div className="text-xs opacity-75">CARDHOLDER</div>
+              <div className="font-semibold">{getCardholderName(cardType)}</div>
+            </div>
+            <div>
+              <div className="text-xs opacity-75">VALID THRU</div>
+              <div className="font-semibold">12/26</div>
+            </div>
+            <div>
+              <div className="text-xs opacity-75">CVV</div>
+              <div className="font-semibold">***</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center mb-6">
+        <div className="text-gray-400 text-sm mb-2">Total Balance</div>
+        <div className="text-4xl font-bold text-cyan-400">${currentBalance.toLocaleString()}</div>
+      </div>
+
+      <div className="text-center mb-6">
+        <div className="text-4xl font-bold text-red-500">${price}</div>
+      </div>
+
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={handleAddBalance}
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          Add
+        </button>
+        <button
+          onClick={handleRemoveBalance}
+          className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
+        >
+          <Minus className="w-4 h-4" />
+          Remove
+        </button>
+      </div>
+
+      <button
+        onClick={() => onSelectForPayment({ id, title, price })}
+        className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold"
+      >
+        Select for Payment
+      </button>
     </div>
   );
 }
