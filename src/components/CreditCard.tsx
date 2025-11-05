@@ -101,27 +101,22 @@ export default function CreditCard({
       <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
-            <span className="text-3xl">{getCountryFlag(country)}</span>
-            <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+            <span className="text-3xl">💰</span>
+            <span className="font-semibold text-gray-300 text-lg">PayPal Transfer</span>
           </div>
           <div className="bg-gray-700 px-4 py-2 rounded-full">
-            <span className="text-gray-200 font-semibold text-sm">PayPal</span>
+            <span className="text-gray-200 font-semibold text-sm">Instant</span>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
-            <div className="text-2xl font-bold">PayPal</div>
-          </div>
-          <div>
-            <div className="text-lg font-mono tracking-widest">{getCardholderName('paypal')}</div>
-          </div>
+        <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center">
+          <div className="text-5xl font-bold mb-4">PayPal</div>
+          <div className="text-4xl font-bold">${balance}</div>
         </div>
 
         <div className="text-center mb-6">
-          <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-          <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
+          <div className="text-gray-400 text-sm mb-2">Transfer Amount</div>
+          <div className="text-4xl font-bold text-cyan-400">${balance}</div>
         </div>
 
         <div className="text-center">
