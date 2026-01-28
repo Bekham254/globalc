@@ -120,42 +120,53 @@ export default function CreditCard({
         </div>
 
         <div className="text-center">
-          <div className="text-4xl font-bold text-red-500">${price}</div>
+          <div className="text-3xl font-bold text-red-500">${price}</div>
         </div>
       </div>
     );
   }
 
   if (isGiftCard) {
+    const giftCardGradients: { [key: string]: string } = {
+      'amazon': 'from-orange-400 to-yellow-500',
+      'apple': 'from-gray-500 to-gray-700',
+      'ebay': 'from-red-500 to-red-700',
+      'google': 'from-blue-400 to-red-400',
+      'itunes': 'from-purple-500 to-purple-700'
+    };
+
+    const getTitleKeyword = () => {
+      const lowerTitle = title.toLowerCase();
+      if (lowerTitle.includes('amazon')) return 'amazon';
+      if (lowerTitle.includes('apple')) return 'apple';
+      if (lowerTitle.includes('ebay')) return 'ebay';
+      if (lowerTitle.includes('google')) return 'google';
+      if (lowerTitle.includes('itunes')) return 'itunes';
+      return 'amazon';
+    };
+
+    const gradient = giftCardGradients[getTitleKeyword()] || giftCardGradients['amazon'];
+
     return (
       <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <span className="text-3xl">{getCountryFlag(country)}</span>
-            <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
-          </div>
+          <div className="font-semibold text-gray-300 text-lg">{title}</div>
           <div className="bg-gray-700 px-4 py-2 rounded-full">
             <span className="text-gray-200 font-semibold text-sm">GIFT CARD</span>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-400 to-yellow-500 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <div className="w-12 h-8 bg-yellow-300 rounded-lg"></div>
-            <div className="text-2xl font-bold">{title}</div>
-          </div>
-          <div>
-            <div className="text-lg font-mono tracking-widest">{getCardholderName('gift')}</div>
-          </div>
+        <div className={`bg-gradient-to-br ${gradient} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center`}>
+          <div className="text-5xl font-bold">{title.split(' ')[0]}</div>
         </div>
 
         <div className="text-center mb-6">
-          <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-          <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
+          <div className="text-gray-400 text-sm mb-2">Card Value</div>
+          <div className="text-4xl font-bold text-cyan-400">${balance}</div>
         </div>
 
         <div className="text-center">
-          <div className="text-4xl font-bold text-red-500">${price}</div>
+          <div className="text-3xl font-bold text-red-500">${price}</div>
         </div>
       </div>
     );
