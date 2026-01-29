@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, CreditCard as CreditCardIcon, Copy } from 'lucide-react';
+import PaymentMethodModal from './PaymentMethodModal';
 
 interface CreditCardProps {
   id: number;
@@ -93,36 +94,61 @@ export default function CreditCard({
   onAddToCart,
   onSelectForPayment
 }: CreditCardProps) {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const isPayPal = cardType.toLowerCase().includes('paypal');
   const isGiftCard = cardType.toLowerCase().includes('gift');
 
   if (isPayPal) {
     return (
-      <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <span className="text-3xl">💰</span>
-            <span className="font-semibold text-gray-300 text-lg">PayPal Transfer</span>
+      <>
+        <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <span className="text-3xl">💰</span>
+              <span className="font-semibold text-gray-300 text-lg">PayPal Transfer</span>
+            </div>
+            <div className="bg-gray-700 px-4 py-2 rounded-full">
+              <span className="text-gray-200 font-semibold text-sm">Instant</span>
+            </div>
           </div>
-          <div className="bg-gray-700 px-4 py-2 rounded-full">
-            <span className="text-gray-200 font-semibold text-sm">Instant</span>
+
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center">
+            <div className="text-5xl font-bold mb-4">PayPal</div>
+            <div className="text-4xl font-bold">${balance}</div>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="text-gray-400 text-sm mb-2">Transfer Amount</div>
+            <div className="text-4xl font-bold text-cyan-400">${balance}</div>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="text-3xl font-bold text-red-500">${price}</div>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => setIsPaymentModalOpen(true)}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+            >
+              Pay with USDT
+            </button>
+            <button
+              onClick={() => setIsPaymentModalOpen(true)}
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 rounded-lg transition"
+            >
+              Pay with M-PESA
+            </button>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center">
-          <div className="text-5xl font-bold mb-4">PayPal</div>
-          <div className="text-4xl font-bold">${balance}</div>
-        </div>
-
-        <div className="text-center mb-6">
-          <div className="text-gray-400 text-sm mb-2">Transfer Amount</div>
-          <div className="text-4xl font-bold text-cyan-400">${balance}</div>
-        </div>
-
-        <div className="text-center">
-          <div className="text-3xl font-bold text-red-500">${price}</div>
-        </div>
-      </div>
+        <PaymentMethodModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          cardTitle={title}
+          cardPrice={price}
+        />
+      </>
     );
   }
 
@@ -148,75 +174,123 @@ export default function CreditCard({
     const gradient = giftCardGradients[getTitleKeyword()] || giftCardGradients['amazon'];
 
     return (
-      <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="font-semibold text-gray-300 text-lg">{title}</div>
-          <div className="bg-gray-700 px-4 py-2 rounded-full">
-            <span className="text-gray-200 font-semibold text-sm">GIFT CARD</span>
+      <>
+        <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="font-semibold text-gray-300 text-lg">{title}</div>
+            <div className="bg-gray-700 px-4 py-2 rounded-full">
+              <span className="text-gray-200 font-semibold text-sm">GIFT CARD</span>
+            </div>
+          </div>
+
+          <div className={`bg-gradient-to-br ${gradient} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center`}>
+            <div className="text-5xl font-bold">{title.split(' ')[0]}</div>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="text-gray-400 text-sm mb-2">Card Value</div>
+            <div className="text-4xl font-bold text-cyan-400">${balance}</div>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="text-3xl font-bold text-red-500">${price}</div>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => setIsPaymentModalOpen(true)}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+            >
+              Pay with USDT
+            </button>
+            <button
+              onClick={() => setIsPaymentModalOpen(true)}
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 rounded-lg transition"
+            >
+              Pay with M-PESA
+            </button>
           </div>
         </div>
 
-        <div className={`bg-gradient-to-br ${gradient} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-center items-center`}>
-          <div className="text-5xl font-bold">{title.split(' ')[0]}</div>
-        </div>
-
-        <div className="text-center mb-6">
-          <div className="text-gray-400 text-sm mb-2">Card Value</div>
-          <div className="text-4xl font-bold text-cyan-400">${balance}</div>
-        </div>
-
-        <div className="text-center">
-          <div className="text-3xl font-bold text-red-500">${price}</div>
-        </div>
-      </div>
+        <PaymentMethodModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          cardTitle={title}
+          cardPrice={price}
+        />
+      </>
     );
   }
 
   // Regular credit/debit cards
   return (
-    <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <span className="text-3xl">{getCountryFlag(country)}</span>
-          <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+    <>
+      <div className="bg-gray-800 rounded-3xl p-6 border border-gray-700 shadow-xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl">{getCountryFlag(country)}</span>
+            <span className="font-semibold text-gray-300 text-lg">{getCountryName(country)}</span>
+          </div>
+          <div className="bg-gray-700 px-4 py-2 rounded-full">
+            <span className="text-gray-200 font-semibold text-sm">{cardType.toUpperCase()}</span>
+          </div>
         </div>
-        <div className="bg-gray-700 px-4 py-2 rounded-full">
-          <span className="text-gray-200 font-semibold text-sm">{cardType.toUpperCase()}</span>
-        </div>
-      </div>
 
-      <div className={`bg-gradient-to-br ${getCardColors(cardType)} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between`}>
-        <div className="flex justify-between items-start">
-          <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
-          <div className="text-2xl font-bold">{cardType.toUpperCase()}</div>
-        </div>
-        <div>
-          <div className="text-lg font-mono tracking-widest mb-4">{getCardNumber(cardType)}</div>
-          <div className="flex justify-between">
-            <div>
-              <div className="text-xs opacity-75">CARDHOLDER</div>
-              <div className="font-semibold">{getCardholderName(cardType)}</div>
-            </div>
-            <div>
-              <div className="text-xs opacity-75">VALID THRU</div>
-              <div className="font-semibold">12/26</div>
-            </div>
-            <div>
-              <div className="text-xs opacity-75">CVV</div>
-              <div className="font-semibold">***</div>
+        <div className={`bg-gradient-to-br ${getCardColors(cardType)} rounded-2xl p-8 text-white mb-6 aspect-video flex flex-col justify-between`}>
+          <div className="flex justify-between items-start">
+            <div className="w-12 h-8 bg-yellow-400 rounded-lg"></div>
+            <div className="text-2xl font-bold">{cardType.toUpperCase()}</div>
+          </div>
+          <div>
+            <div className="text-lg font-mono tracking-widest mb-4">{getCardNumber(cardType)}</div>
+            <div className="flex justify-between">
+              <div>
+                <div className="text-xs opacity-75">CARDHOLDER</div>
+                <div className="font-semibold">{getCardholderName(cardType)}</div>
+              </div>
+              <div>
+                <div className="text-xs opacity-75">VALID THRU</div>
+                <div className="font-semibold">12/26</div>
+              </div>
+              <div>
+                <div className="text-xs opacity-75">CVV</div>
+                <div className="font-semibold">***</div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="text-center mb-6">
+          <div className="text-gray-400 text-sm mb-2">Total Balance</div>
+          <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
+        </div>
+
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-red-500">${price}</div>
+        </div>
+
+        <div className="space-y-3">
+          <button
+            onClick={() => setIsPaymentModalOpen(true)}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+          >
+            Pay with USDT
+          </button>
+          <button
+            onClick={() => setIsPaymentModalOpen(true)}
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 rounded-lg transition"
+          >
+            Pay with M-PESA
+          </button>
+        </div>
       </div>
 
-      <div className="text-center mb-6">
-        <div className="text-gray-400 text-sm mb-2">Total Balance</div>
-        <div className="text-4xl font-bold text-cyan-400">${balance.toLocaleString()}</div>
-      </div>
-
-      <div className="text-center">
-        <div className="text-4xl font-bold text-red-500">${price}</div>
-      </div>
-    </div>
+      <PaymentMethodModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        cardTitle={title}
+        cardPrice={price}
+      />
+    </>
   );
 }
