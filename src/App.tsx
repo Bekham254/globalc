@@ -6,7 +6,6 @@ import CreditCard from './components/CreditCard';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import ExchangeRatesModal from './components/ExchangeRatesModal';
-import USDTPaymentSection from './components/USDTPaymentSection';
 import ScreenshotUpload from './components/ScreenshotUpload';
 import { useCards } from './hooks/useCards';
 import { useAuth } from './hooks/useAuth';
@@ -18,7 +17,6 @@ export default function App() {
   const [cartCount, setCartCount] = useState(0);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isExchangeRatesModalOpen, setIsExchangeRatesModalOpen] = useState(false);
-  const [selectedCardForPayment, setSelectedCardForPayment] = useState(null);
 
   const { cards: filteredAndSortedCards, loading } = useCards(searchTerm, selectedCountry, sortBy);
   const { user } = useAuth();
@@ -74,7 +72,6 @@ export default function App() {
                 rating={card.rating}
                 country={card.country as any}
                 onAddToCart={handleAddToCart}
-                onSelectForPayment={setSelectedCardForPayment}
               />
             ))}
           </div>
@@ -86,11 +83,6 @@ export default function App() {
             <p className="text-gray-500">Try adjusting your search or filter criteria</p>
           </div>
         )}
-        
-        {/* USDT Payment Section */}
-        <div id="payment-section" className="mt-16">
-          <USDTPaymentSection selectedCard={selectedCardForPayment} />
-        </div>
         
         {/* Payment Screenshot Upload Section */}
         <div className="mt-16">

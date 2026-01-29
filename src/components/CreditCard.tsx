@@ -13,7 +13,6 @@ interface CreditCardProps {
   rating: number;
   country: string;
   onAddToCart: (id: number) => void;
-  onSelectForPayment: (card: { id: number; title: string; price: number }) => void;
 }
 
 const getCountryFlag = (country: string) => {
@@ -91,8 +90,7 @@ export default function CreditCard({
   cardColor,
   rating,
   country,
-  onAddToCart,
-  onSelectForPayment
+  onAddToCart
 }: CreditCardProps) {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const isPayPal = cardType.toLowerCase().includes('paypal');
