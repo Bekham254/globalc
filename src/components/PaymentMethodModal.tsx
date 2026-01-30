@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Copy, CheckCircle, Bitcoin, Phone } from 'lucide-react';
+import { X, Copy, CheckCircle, Bitcoin, Phone, Lock } from 'lucide-react';
 
 interface PaymentMethodModalProps {
   isOpen: boolean;
@@ -276,7 +276,7 @@ export default function PaymentMethodModal({
           </button>
         </div>
 
-        <div className="p-6 space-y-4">
+        <div className="p-6 space-y-3">
           <button
             onClick={() => setSelectedMethod('usdt')}
             className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
@@ -293,9 +293,65 @@ export default function PaymentMethodModal({
             <span>Pay with M-PESA</span>
           </button>
 
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">Opay</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">Zap</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">Vodafone Cash</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">MTN MoMo</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">MTN Mobile Money</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+
+            <button
+              disabled
+              className="bg-gray-700 text-gray-400 font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2 opacity-60 cursor-not-allowed relative group"
+            >
+              <Phone className="w-5 h-5" />
+              <span className="text-sm">MTN Uganda</span>
+              <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded font-semibold">Coming Soon</span>
+            </button>
+          </div>
+
           <button
             onClick={onClose}
-            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition"
+            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition mt-2"
           >
             Cancel
           </button>
