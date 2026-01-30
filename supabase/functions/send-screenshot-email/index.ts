@@ -1,10 +1,13 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { Resend } from 'npm:resend@3.2.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
+
+const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -58,44 +61,43 @@ Deno.serve(async (req) => {
     const arrayBuffer = await file.arrayBuffer()
     const base64File = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
 
-    // Prepare email data
-    const emailData = {
-      to: 'cardvaulter@gmail.com',
-      from: customerEmail || 'noreply@cardvault.com',
-      subject: `Payment Screenshot - CardVault Order #${submission.id}`,
-      text: `
-New payment screenshot received from CardVault customer.
-
-Customer Email: ${customerEmail || 'Not provided'}
-Order Details: ${orderDetails || 'Payment screenshot submission'}
-Screenshot File: ${file.name}
-File Size: ${(file.size / 1024 / 1024).toFixed(2)} MB
-Submission ID: ${submission.id}
-Timestamp: ${new Date().toISOString()}
-
-Please check the admin panel for the uploaded screenshot.
-      `,
-      attachments: [{
-        filename: file.name,
-        content: base64File,
-        contentType: file.type
-      }]
-    }
-
-    // Log email data for debugging
-    console.log('Email data prepared for submission:', submission.id)
-
-    // Try to send email notification (this will be logged even if email service is not configured)
+    // Send email with Resend
     try {
-      // In a production environment, you would integrate with a real email service here
-      // For now, we'll just log the email attempt
-      console.log('Email would be sent to cardvaulter@gmail.com with attachment:', file.name)
-      
-      // Simulate email sending delay
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      const emailResponse = await resend.emails.send({
+        from: 'noreply@cardvault.com',
+        to: 'cardvaulter@gmail.com',
+        subject: `Payment Screenshot - CardVault Order #${submission.id}`,
+        html: `
+<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px;">
+  <h2 style="color: #1a7f64;">New Payment Screenshot Received</h2>
+
+  <div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <p><strong>Customer Email:</strong> ${customerEmail || 'Not provided'}</p>
+    <p><strong>Order Details:</strong> ${orderDetails || 'Payment screenshot submission'}</p>
+    <p><strong>Screenshot File:</strong> ${file.name}</p>
+    <p><strong>File Size:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+    <p><strong>Submission ID:</strong> ${submission.id}</p>
+    <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+  </div>
+
+  <p>Please check the admin panel for the uploaded screenshot.</p>
+</div>
+        `,
+        attachments: [{
+          filename: file.name,
+          content: base64File
+        }]
+      })
+
+      if (emailResponse.error) {
+        console.error('Email sending error:', emailResponse.error)
+        throw new Error(`Failed to send email: ${emailResponse.error.message}`)
+      }
+
+      console.log('Email sent successfully to cardvaulter@gmail.com')
     } catch (emailError) {
-      console.log('Email service not configured, but submission saved to database')
+      console.error('Email service error:', emailError)
+      throw new Error(`Failed to send email notification: ${emailError instanceof Error ? emailError.message : 'Unknown error'}`)
     }
 
     // Always return success since we saved to database
