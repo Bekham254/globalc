@@ -6,7 +6,7 @@ interface PaymentMethodModalProps {
   onClose: () => void;
   cardTitle: string;
   cardPrice: number;
-  selectedMethod?: 'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | null;
+  selectedMethod?: 'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | 'other' | null;
 }
 
 const USDT_TRC20_ADDRESS = "TBc4q4B9y8zYCAm7k67mpTjjQbdaLztwiF";
@@ -52,7 +52,7 @@ export default function PaymentMethodModal({
   selectedMethod: propSelectedMethod
 }: PaymentMethodModalProps) {
   const [copied, setCopied] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | null>(propSelectedMethod || null);
+  const [selectedMethod, setSelectedMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | 'other' | null>(propSelectedMethod || null);
 
   const handleCopyAddress = async () => {
     try {
@@ -950,6 +950,87 @@ export default function PaymentMethodModal({
     );
   }
 
+  if (selectedMethod === 'other') {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-700">
+          <div className="sticky top-0 bg-gray-800 border-b border-gray-700 p-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white">Other Payment Methods</h2>
+            <button
+              onClick={() => {
+                setSelectedMethod(null);
+                onClose();
+              }}
+              className="text-gray-400 hover:text-gray-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="p-6 space-y-3">
+            <button
+              onClick={() => setSelectedMethod('mpesa')}
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>M-PESA</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMethod('opay')}
+              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>OPay</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMethod('zap')}
+              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>Zap</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMethod('vodafone')}
+              className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>Vodafone Cash</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMethod('mtn-momo')}
+              className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>MTN MoMo</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMethod('mtn-uganda')}
+              className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            >
+              <Phone className="w-6 h-6" />
+              <span>MTN Uganda</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedMethod(null);
+                onClose();
+              }}
+              className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition mt-4"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-gray-800 rounded-2xl max-w-2xl w-full border border-gray-700">
@@ -976,62 +1057,20 @@ export default function PaymentMethodModal({
           </button>
 
           <button
-            onClick={() => setSelectedMethod('mpesa')}
-            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+            onClick={() => setSelectedMethod('mtn-mobile')}
+            className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
           >
             <Phone className="w-6 h-6" />
-            <span>Pay with M-PESA</span>
+            <span>Pay with MTN Mobile</span>
           </button>
 
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setSelectedMethod('opay')}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">Opay</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedMethod('zap')}
-              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">Zap</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedMethod('vodafone')}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">Vodafone</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedMethod('mtn-momo')}
-              className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">MTN MoMo</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedMethod('mtn-mobile')}
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">MTN Mobile</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedMethod('mtn-uganda')}
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center space-x-2"
-            >
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">MTN Uganda</span>
-            </button>
-          </div>
+          <button
+            onClick={() => setSelectedMethod('other')}
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 rounded-lg transition flex items-center justify-center space-x-3"
+          >
+            <Phone className="w-6 h-6" />
+            <span>Other Payment Methods</span>
+          </button>
 
           <button
             onClick={onClose}

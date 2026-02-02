@@ -93,7 +93,7 @@ export default function CreditCard({
   onAddToCart
 }: CreditCardProps) {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | 'other' | null>(null);
   const isPayPal = cardType.toLowerCase().includes('paypal');
   const isGiftCard = cardType.toLowerCase().includes('gift');
 
