@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, Copy, CheckCircle, Bitcoin, Phone, Lock } from 'lucide-react';
+import { X, Bitcoin, Phone } from 'lucide-react';
+import CopyButton from './CopyButton';
 
 interface PaymentMethodModalProps {
   isOpen: boolean;
@@ -51,18 +52,7 @@ export default function PaymentMethodModal({
   cardPrice,
   selectedMethod: propSelectedMethod
 }: PaymentMethodModalProps) {
-  const [copied, setCopied] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | 'other' | null>(propSelectedMethod || null);
-
-  const handleCopyAddress = async () => {
-    try {
-      await navigator.clipboard.writeText(USDT_TRC20_ADDRESS);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy address:', err);
-    }
-  };
 
   if (!isOpen) return null;
 
@@ -101,22 +91,8 @@ export default function PaymentMethodModal({
                   <code className="flex-1 bg-gray-800 p-3 rounded border border-gray-700 text-sm font-mono break-all text-cyan-400">
                     {USDT_TRC20_ADDRESS}
                   </code>
-                  <button
-                    onClick={handleCopyAddress}
-                    className={`p-3 rounded transition-colors flex-shrink-0 ${
-                      copied
-                        ? 'bg-green-600 text-white'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
-                    }`}
-                  >
-                    {copied ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                  </button>
+                  <CopyButton text={USDT_TRC20_ADDRESS} variant="dark" />
                 </div>
-                {copied && (
-                  <div className="text-green-400 text-sm mt-2 font-medium">
-                    ✓ Address copied to clipboard!
-                  </div>
-                )}
               </div>
             </div>
 
@@ -214,12 +190,18 @@ export default function PaymentMethodModal({
 
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Paybill Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Paybill Number</div>
+                  <CopyButton text="542542" variant="dark" />
+                </div>
                 <div className="text-3xl font-bold text-white font-mono">542542</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Account Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Account Number</div>
+                  <CopyButton text="04808493216150" variant="dark" />
+                </div>
                 <div className="text-2xl font-bold text-white font-mono">04808493216150</div>
               </div>
             </div>
@@ -327,16 +309,25 @@ export default function PaymentMethodModal({
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <div className="text-sm text-gray-400 mb-2">Business Name</div>
-                <div className="text-xl font-bold text-white">{details.businessName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xl font-bold text-white">{details.businessName}</div>
+                  <CopyButton text={details.businessName} variant="dark" />
+                </div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Phone Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Phone Number</div>
+                  <CopyButton text={details.phone} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.phone}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Business ID</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Business ID</div>
+                  <CopyButton text={details.businessId} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.businessId}</div>
               </div>
             </div>
@@ -437,16 +428,25 @@ export default function PaymentMethodModal({
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <div className="text-sm text-gray-400 mb-2">Store Name</div>
-                <div className="text-xl font-bold text-white">{details.businessName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xl font-bold text-white">{details.businessName}</div>
+                  <CopyButton text={details.businessName} variant="dark" />
+                </div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Phone Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Phone Number</div>
+                  <CopyButton text={details.phone} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.phone}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Merchant ID</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Merchant ID</div>
+                  <CopyButton text={details.businessId} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.businessId}</div>
               </div>
             </div>
@@ -546,12 +546,18 @@ export default function PaymentMethodModal({
 
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Short Code</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Short Code</div>
+                  <CopyButton text={details.shortCode} variant="dark" />
+                </div>
                 <div className="text-3xl font-bold text-white font-mono">{details.shortCode}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Account Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Account Number</div>
+                  <CopyButton text={details.accountNumber} variant="dark" />
+                </div>
                 <div className="text-2xl font-bold text-white font-mono">{details.accountNumber}</div>
               </div>
             </div>
@@ -652,16 +658,25 @@ export default function PaymentMethodModal({
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <div className="text-sm text-gray-400 mb-2">Merchant Name</div>
-                <div className="text-xl font-bold text-white">{details.businessName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xl font-bold text-white">{details.businessName}</div>
+                  <CopyButton text={details.businessName} variant="dark" />
+                </div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Phone Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Phone Number</div>
+                  <CopyButton text={details.phone} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.phone}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Account Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Account Number</div>
+                  <CopyButton text={details.accountNumber} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.accountNumber}</div>
               </div>
             </div>
@@ -762,16 +777,25 @@ export default function PaymentMethodModal({
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <div className="text-sm text-gray-400 mb-2">Business Name</div>
-                <div className="text-xl font-bold text-white">{details.businessName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xl font-bold text-white">{details.businessName}</div>
+                  <CopyButton text={details.businessName} variant="dark" />
+                </div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Phone Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Phone Number</div>
+                  <CopyButton text={details.phone} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.phone}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Account Reference</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Account Reference</div>
+                  <CopyButton text={details.accountNumber} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.accountNumber}</div>
               </div>
             </div>
@@ -872,16 +896,25 @@ export default function PaymentMethodModal({
             <div className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <div className="text-sm text-gray-400 mb-2">Merchant Name</div>
-                <div className="text-xl font-bold text-white">{details.businessName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-xl font-bold text-white">{details.businessName}</div>
+                  <CopyButton text={details.businessName} variant="dark" />
+                </div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Phone Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Phone Number</div>
+                  <CopyButton text={details.phone} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.phone}</div>
               </div>
 
               <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="text-sm text-gray-400 mb-2">Account Number</div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm text-gray-400">Account Number</div>
+                  <CopyButton text={details.accountNumber} variant="dark" />
+                </div>
                 <div className="text-xl font-bold text-white font-mono">{details.accountNumber}</div>
               </div>
             </div>
