@@ -277,9 +277,9 @@ export default function CreditCard({
           </button>
           <button
             onClick={() => setIsPaymentModalOpen(true)}
-            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 rounded-lg transition"
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition"
           >
-            Pay with M-PESA
+            Other Payment Methods
           </button>
         </div>
       </div>
