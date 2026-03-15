@@ -7,14 +7,19 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 }
 
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
-
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
+    const resendApiKey = Deno.env.get('RESEND_API_KEY')
+    if (!resendApiKey) {
+      throw new Error('RESEND_API_KEY is not configured')
+    }
+
+    const resend = new Resend(resendApiKey)
+
     // Create Supabase client with service role for public access
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
