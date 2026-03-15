@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Upload, X, CheckCircle } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 export default function ScreenshotUpload() {
+  const { user } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -35,7 +37,7 @@ export default function ScreenshotUpload() {
     try {
       const formData = new FormData();
       formData.append('screenshot', selectedFile);
-      formData.append('customerEmail', 'customer@cardvault.com');
+      formData.append('customerEmail', user?.email || 'anonymous@cardvault.com');
       formData.append('orderDetails', `Payment screenshot: ${selectedFile.name} - ${new Date().toLocaleString()}`);
       
       // Call the edge function to send email
