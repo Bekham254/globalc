@@ -44,7 +44,7 @@ export default function ScreenshotUpload() {
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-screenshot-email`, {
         method: 'POST',
         headers: {
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: formData,
       });
