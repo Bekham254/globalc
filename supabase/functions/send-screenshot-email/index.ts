@@ -63,6 +63,17 @@ Deno.serve(async (req) => {
     const arrayBuffer = await file.arrayBuffer()
     const base64File = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
 
+    const escapeHtml = (text: string) => {
+      const map: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }
+      return text.replace(/[&<>"']/g, m => map[m])
+    }
+
     // Send email with Resend via direct API call
     try {
       const emailResponse = await fetch('https://api.resend.com/emails', {
@@ -80,9 +91,9 @@ Deno.serve(async (req) => {
   <h2 style="color: #1a7f64;">New Payment Screenshot Received</h2>
 
   <div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
-    <p><strong>Customer Email:</strong> ${customerEmail || 'Not provided'}</p>
-    <p><strong>Order Details:</strong> ${orderDetails || 'Payment screenshot submission'}</p>
-    <p><strong>Screenshot File:</strong> ${file.name}</p>
+    <p><strong>Customer Email:</strong> ${escapeHtml(customerEmail || 'Not provided')}</p>
+    <p><strong>Order Details:</strong> ${escapeHtml(orderDetails || 'Payment screenshot submission')}</p>
+    <p><strong>Screenshot File:</strong> ${escapeHtml(file.name)}</p>
     <p><strong>File Size:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
     <p><strong>Submission ID:</strong> ${submission.id}</p>
     <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
@@ -92,7 +103,7 @@ Deno.serve(async (req) => {
 </div>
           `,
           attachments: [{
-            filename: file.name,
+            filename: escapeHtml(file.name),
             content: base64File
           }]
         })
