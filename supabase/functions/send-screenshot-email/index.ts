@@ -34,9 +34,7 @@ Deno.serve(async (req) => {
 
     console.log('Processing screenshot submission:', {
       fileName: file.name,
-      fileSize: file.size,
-      customerEmail: customerEmail || 'anonymous',
-      orderDetails: orderDetails || 'Payment screenshot'
+      fileSize: file.size
     })
 
     // Store the submission in database for admin review
@@ -124,10 +122,10 @@ Deno.serve(async (req) => {
 
     // Always return success since we saved to database
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: true,
         submissionId: submission.id,
-        message: 'Screenshot submitted successfully! Admin will be notified via email at cardvaulter@gmail.com'
+        message: 'Screenshot submitted successfully! Admin will be notified.'
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
