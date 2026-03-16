@@ -1,5 +1,4 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
-import { Resend } from 'npm:resend@3.2.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,8 +16,6 @@ Deno.serve(async (req) => {
     if (!resendApiKey) {
       throw new Error('RESEND_API_KEY is not configured')
     }
-
-    const resend = new Resend(resendApiKey)
 
     // Create Supabase client with service role for public access
     const supabaseClient = createClient(
@@ -66,13 +63,19 @@ Deno.serve(async (req) => {
     const arrayBuffer = await file.arrayBuffer()
     const base64File = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
 
-    // Send email with Resend
+    // Send email with Resend via direct API call
     try {
-      const emailResponse = await resend.emails.send({
-        from: 'noreply@cardvault.com',
-        to: 'cardvaulter@gmail.com',
-        subject: `Payment Screenshot - CardVault Order #${submission.id}`,
-        html: `
+      const emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'noreply@cardvault.com',
+          to: 'cardvaulter@gmail.com',
+          subject: `Payment Screenshot - CardVault Order #${submission.id}`,
+          html: `
 <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px;">
   <h2 style="color: #1a7f64;">New Payment Screenshot Received</h2>
 
@@ -87,19 +90,22 @@ Deno.serve(async (req) => {
 
   <p>Please check the admin panel for the uploaded screenshot.</p>
 </div>
-        `,
-        attachments: [{
-          filename: file.name,
-          content: base64File
-        }]
+          `,
+          attachments: [{
+            filename: file.name,
+            content: base64File
+          }]
+        })
       })
 
-      if (emailResponse.error) {
-        console.error('Email sending error:', emailResponse.error)
-        throw new Error(`Failed to send email: ${emailResponse.error.message}`)
+      const emailResult = await emailResponse.json()
+
+      if (!emailResponse.ok) {
+        console.error('Email API error:', emailResult)
+        throw new Error(`Failed to send email: ${emailResult.message || 'Email service error'}`)
       }
 
-      console.log('Email sent successfully to cardvaulter@gmail.com')
+      console.log('Email sent successfully:', emailResult.id)
     } catch (emailError) {
       console.error('Email service error:', emailError)
       throw new Error(`Failed to send email notification: ${emailError instanceof Error ? emailError.message : 'Unknown error'}`)
