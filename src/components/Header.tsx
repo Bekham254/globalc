@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, CreditCard, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Search, Menu, CreditCard, User, LogOut, FileText } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface HeaderProps {
@@ -8,14 +8,16 @@ interface HeaderProps {
   onSearchChange: (term: string) => void;
   onLoginClick: () => void;
   onExchangeRatesClick: () => void;
+  onSubmissionsClick: () => void;
 }
 
-export default function Header({ 
-  cartCount, 
-  searchTerm, 
-  onSearchChange, 
-  onLoginClick, 
-  onExchangeRatesClick
+export default function Header({
+  cartCount,
+  searchTerm,
+  onSearchChange,
+  onLoginClick,
+  onExchangeRatesClick,
+  onSubmissionsClick
 }: HeaderProps) {
   const { user, signOut } = useAuth();
 
@@ -78,6 +80,13 @@ export default function Header({
                   <User className="w-5 h-5 text-gray-400" />
                   <span className="text-sm font-medium text-gray-300">{user.email?.split('@')[0]}</span>
                 </div>
+                <button
+                  onClick={onSubmissionsClick}
+                  className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
+                  title="View submissions"
+                >
+                  <FileText className="w-4 h-4" />
+                </button>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-400 hover:text-red-400 transition-colors"

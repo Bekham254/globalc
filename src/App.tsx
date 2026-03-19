@@ -2,11 +2,12 @@ import React, { useState, useMemo } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import FilterBar from './components/FilterBar';
-import CreditCard from './components/CreditCard'; 
+import CreditCard from './components/CreditCard';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import ExchangeRatesModal from './components/ExchangeRatesModal';
 import ScreenshotUpload from './components/ScreenshotUpload';
+import ScreenshotHistory from './components/ScreenshotHistory';
 import { useCards } from './hooks/useCards';
 import { useAuth } from './hooks/useAuth';
 
@@ -17,6 +18,7 @@ export default function App() {
   const [cartCount, setCartCount] = useState(0);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isExchangeRatesModalOpen, setIsExchangeRatesModalOpen] = useState(false);
+  const [isScreenshotHistoryOpen, setIsScreenshotHistoryOpen] = useState(false);
 
   const { cards: filteredAndSortedCards, loading } = useCards(searchTerm, selectedCountry, sortBy);
   const { user } = useAuth();
@@ -29,12 +31,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Header 
+      <Header
         cartCount={cartCount}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         onLoginClick={() => setIsLoginModalOpen(true)}
         onExchangeRatesClick={() => setIsExchangeRatesModalOpen(true)}
+        onSubmissionsClick={() => setIsScreenshotHistoryOpen(true)}
       />
       
       <Hero />
@@ -92,14 +95,19 @@ export default function App() {
       
       <Footer />
       
-      <LoginModal 
+      <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
       />
-      
-      <ExchangeRatesModal 
+
+      <ExchangeRatesModal
         isOpen={isExchangeRatesModalOpen}
         onClose={() => setIsExchangeRatesModalOpen(false)}
+      />
+
+      <ScreenshotHistory
+        isOpen={isScreenshotHistoryOpen}
+        onClose={() => setIsScreenshotHistoryOpen(false)}
       />
     </div>
   );
