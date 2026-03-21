@@ -8,6 +8,7 @@ import LoginModal from './components/LoginModal';
 import ExchangeRatesModal from './components/ExchangeRatesModal';
 import ScreenshotUpload from './components/ScreenshotUpload';
 import ScreenshotHistory from './components/ScreenshotHistory';
+import AdminDashboard from './components/AdminDashboard';
 import { useCards } from './hooks/useCards';
 import { useAuth } from './hooks/useAuth';
 
@@ -19,6 +20,7 @@ export default function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isExchangeRatesModalOpen, setIsExchangeRatesModalOpen] = useState(false);
   const [isScreenshotHistoryOpen, setIsScreenshotHistoryOpen] = useState(false);
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
 
   const { cards: filteredAndSortedCards, loading } = useCards(searchTerm, selectedCountry, sortBy);
   const { user } = useAuth();
@@ -38,6 +40,7 @@ export default function App() {
         onLoginClick={() => setIsLoginModalOpen(true)}
         onExchangeRatesClick={() => setIsExchangeRatesModalOpen(true)}
         onSubmissionsClick={() => setIsScreenshotHistoryOpen(true)}
+        onAdminClick={() => setIsAdminDashboardOpen(true)}
       />
       
       <Hero />
@@ -108,6 +111,11 @@ export default function App() {
       <ScreenshotHistory
         isOpen={isScreenshotHistoryOpen}
         onClose={() => setIsScreenshotHistoryOpen(false)}
+      />
+
+      <AdminDashboard
+        isOpen={isAdminDashboardOpen}
+        onClose={() => setIsAdminDashboardOpen(false)}
       />
     </div>
   );

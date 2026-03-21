@@ -1,6 +1,7 @@
 import React from 'react';
-import { ShoppingCart, Search, Menu, CreditCard, User, LogOut, FileText } from 'lucide-react';
+import { ShoppingCart, Search, Menu, CreditCard, User, LogOut, FileText, Shield } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useAdmin } from '../hooks/useAdmin';
 
 interface HeaderProps {
   cartCount: number;
@@ -9,6 +10,7 @@ interface HeaderProps {
   onLoginClick: () => void;
   onExchangeRatesClick: () => void;
   onSubmissionsClick: () => void;
+  onAdminClick: () => void;
 }
 
 export default function Header({
@@ -17,9 +19,11 @@ export default function Header({
   onSearchChange,
   onLoginClick,
   onExchangeRatesClick,
-  onSubmissionsClick
+  onSubmissionsClick,
+  onAdminClick
 }: HeaderProps) {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useAdmin();
 
   const handleLogout = async () => {
     try {
@@ -80,6 +84,15 @@ export default function Header({
                   <User className="w-5 h-5 text-gray-400" />
                   <span className="text-sm font-medium text-gray-300">{user.email?.split('@')[0]}</span>
                 </div>
+                {isAdmin && (
+                  <button
+                    onClick={onAdminClick}
+                    className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-400 hover:text-yellow-400 transition-colors"
+                    title="Admin dashboard"
+                  >
+                    <Shield className="w-4 h-4" />
+                  </button>
+                )}
                 <button
                   onClick={onSubmissionsClick}
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
