@@ -165,7 +165,7 @@ export default function PaymentMethodModal({
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div className="bg-gray-800 rounded-2xl max-w-2xl w-full border border-gray-700">
           <div className="border-b border-gray-700 p-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">M-PESA Payment Details</h2>
+            <h2 className="text-2xl font-bold text-white">M-PESA</h2>
             <button
               onClick={() => {
                 setSelectedMethod(null);
@@ -178,99 +178,53 @@ export default function PaymentMethodModal({
           </div>
 
           <div className="p-6 space-y-6">
-            <div className="bg-green-900/30 border border-green-700 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <Phone className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
+            <div className="bg-red-900/30 border border-red-700 rounded-lg p-6">
+              <div className="flex items-start space-x-4">
+                <div className="text-red-400 text-3xl mt-1">⚠️</div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-white mb-1">{cardTitle}</h3>
-                  <p className="text-gray-400">Amount to send: <span className="text-2xl font-bold text-green-400">${cardPrice}</span></p>
+                  <h3 className="font-bold text-white mb-2 text-lg">Currently Unavailable</h3>
+                  <p className="text-gray-300 mb-3">M-PESA payment is temporarily unavailable at the moment.</p>
+                  <p className="text-gray-400 text-sm">Please use one of our other payment methods to complete your purchase.</p>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm text-gray-400">Paybill Number</div>
-                  <CopyButton text="542542" variant="dark" />
-                </div>
-                <div className="text-3xl font-bold text-white font-mono">542542</div>
-              </div>
-
-              <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm text-gray-400">Account Number</div>
-                  <CopyButton text="04808493216150" variant="dark" />
-                </div>
-                <div className="text-2xl font-bold text-white font-mono">04808493216150</div>
-              </div>
+            <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-3 flex items-center space-x-2">
+                <span>✓</span>
+                <span>Alternative Payment Methods Available</span>
+              </h4>
+              <ul className="text-gray-300 space-y-2 text-sm">
+                <li>• USDT (Crypto)</li>
+                <li>• OPay</li>
+                <li>• Zap</li>
+                <li>• Vodafone Cash</li>
+                <li>• MTN MoMo</li>
+                <li>• MTN Mobile Money</li>
+                <li>• MTN Uganda</li>
+              </ul>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-white mb-4">How to Pay</h3>
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
-                  <div>
-                    <div className="font-medium text-white">Open M-PESA on your phone</div>
-                    <div className="text-sm text-gray-400">Dial *334# or use the M-PESA app</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
-                  <div>
-                    <div className="font-medium text-white">Select "Lipa Na M-PESA Online"</div>
-                    <div className="text-sm text-gray-400">Choose the payment option</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
-                  <div>
-                    <div className="font-medium text-white">Enter the details</div>
-                    <div className="text-sm text-gray-400">Paybill: 542542, Account: 04808493216150</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
-                  <div>
-                    <div className="font-medium text-white">Enter amount and complete</div>
-                    <div className="text-sm text-gray-400">Amount: ${cardPrice}</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">5</div>
-                  <div>
-                    <div className="font-medium text-white">Save your receipt</div>
-                    <div className="text-sm text-gray-400">You'll need it for verification</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div className="space-y-3">
+              <button
+                onClick={() => {
+                  setSelectedMethod(null);
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition"
+              >
+                Choose Another Method
+              </button>
 
-            <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <div className="text-yellow-400 mt-1">⚠️</div>
-                <div>
-                  <div className="text-sm font-medium text-yellow-300 mb-1">Important</div>
-                  <ul className="text-sm text-yellow-200 space-y-1">
-                    <li>• Use the correct Paybill and Account numbers</li>
-                    <li>• Send exactly ${cardPrice}</li>
-                    <li>• Save your M-PESA receipt</li>
-                    <li>• Contact support if payment fails</li>
-                  </ul>
-                </div>
-              </div>
+              <button
+                onClick={() => {
+                  setSelectedMethod(null);
+                  onClose();
+                }}
+                className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition"
+              >
+                Cancel
+              </button>
             </div>
-
-            <button
-              onClick={() => {
-                setSelectedMethod(null);
-                onClose();
-              }}
-              className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition"
-            >
-              Close
-            </button>
           </div>
         </div>
       </div>
