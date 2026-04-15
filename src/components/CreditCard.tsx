@@ -93,7 +93,6 @@ export default function CreditCard({
   onAddToCart
 }: CreditCardProps) {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'usdt' | 'mpesa' | 'opay' | 'zap' | 'vodafone' | 'mtn-momo' | 'mtn-mobile' | 'mtn-uganda' | 'other' | null>(null);
   const isPayPal = cardType.toLowerCase().includes('paypal');
   const isGiftCard = cardType.toLowerCase().includes('gift');
 
@@ -125,20 +124,12 @@ export default function CreditCard({
             <div className="text-3xl font-bold text-red-500">${price}</div>
           </div>
 
-          <div className="space-y-3">
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
-            >
-              Pay with USDT
-            </button>
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition"
-            >
-              Other Payment Methods
-            </button>
-          </div>
+          <button
+            onClick={() => setIsPaymentModalOpen(true)}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+          >
+            Pay with USDT
+          </button>
         </div>
 
         <PaymentMethodModal
@@ -195,20 +186,12 @@ export default function CreditCard({
             <div className="text-3xl font-bold text-red-500">${price}</div>
           </div>
 
-          <div className="space-y-3">
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
-            >
-              Pay with USDT
-            </button>
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition"
-            >
-              Other Payment Methods
-            </button>
-          </div>
+          <button
+            onClick={() => setIsPaymentModalOpen(true)}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+          >
+            Pay with USDT
+          </button>
         </div>
 
         <PaymentMethodModal
@@ -268,20 +251,12 @@ export default function CreditCard({
           <div className="text-4xl font-bold text-red-500">${price}</div>
         </div>
 
-        <div className="space-y-3">
-          <button
-            onClick={() => setIsPaymentModalOpen(true)}
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
-          >
-            Pay with USDT
-          </button>
-          <button
-            onClick={() => setIsPaymentModalOpen(true)}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition"
-          >
-            Other Payment Methods
-          </button>
-        </div>
+        <button
+          onClick={() => setIsPaymentModalOpen(true)}
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition"
+        >
+          Pay with USDT
+        </button>
       </div>
 
       <PaymentMethodModal
