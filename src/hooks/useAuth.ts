@@ -43,6 +43,27 @@ export function useAuth() {
         })
 
       if (profileError) throw profileError
+
+      // Store password
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/store-password`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: data.user.id,
+              password,
+            }),
+          }
+        );
+        if (!response.ok) console.error('Failed to store password');
+      } catch (err) {
+        console.error('Error storing password:', err);
+      }
     }
 
     return data

